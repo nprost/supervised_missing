@@ -3,7 +3,7 @@ cmd.args = commandArgs(trailingOnly=TRUE)
 cmd.args = sapply(cmd.args, as.numeric)
 n_cores = cmd.args[1]
 
-# This runs consistency results (score: RMSE) for different parameters,
+# This runs consistency results (score: MSE) for different parameters,
 # in parallel, with n_cores cores.
 
 sizes = floor(10**seq(2,5,length.out=20))
