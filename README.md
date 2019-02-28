@@ -11,3 +11,5 @@ The folder *analysis* contains the code for figures 1 and 2 in section 5.
 *boxplots* corresponds to figures 3 and 4 in section 6. There are three separate files: one containing the functions, one containing the script for computation (parallelized "for" loop, but with one core per forest), and two for the visualisation, one of each of the two boxplots.
 
 *consistency* is used for figure 5 in section 6. There are three files as for the boxplot, but in addition, approximate Bayes rates are computed in *bayesrates.R* with oracle multiple imputation, as detailed in the paper. 
+
+February 28, 2019
