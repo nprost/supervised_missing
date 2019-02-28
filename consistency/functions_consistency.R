@@ -223,7 +223,7 @@ run_scores <- function(model, strategy, withpattern, dataset,
                     (minbucket=min_samples_leaf, mincriterion=0.0))
                 res <- predict(reg, subset(test, select=-c(y)))
             } else if (model == "ranger") {
-                reg <- ranger(y~., data=train, num.threads=1)
+                reg <- ranger(y~., data=train, num.threads=1, verbose=F)
                 res <- predict(reg, subset(test, select=-c(y)))$predictions
             } else stop("Invalid model")
 
