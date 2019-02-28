@@ -39,12 +39,12 @@ scores_21 <- lapply(scores_21, function(x) x-Reduce("+", scores_21) / length(sco
 scores_22 <- lapply(scores_22, function(x) x-Reduce("+", scores_22) / length(scores_22))
 scores_23 <- lapply(scores_23, function(x) x-Reduce("+", scores_23) / length(scores_23))
 
-pdf('figures/boxplot_linearlinear.pdf', width=9.5, height=13)
-aa=cbind.data.frame(unlist(scores_21),rep(names(scores_21), each = 500))
-colnames(aa)= c("score", "method")
-aa$forest = as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
-aa$method = as.factor(sub("\\ \\(forest\\)","", aa$method))
-aa$method = as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
+pdf('../figures/boxplot_linearlinear.pdf', width=9.5, height=13)
+aa <- cbind.data.frame(unlist(scores_21), rep(names(scores_21), each = 500))
+colnames(aa) <- c("score", "method")
+aa$forest <- as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
+aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
+aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 
 ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
@@ -57,7 +57,6 @@ ggplot(data=aa, aes(method, score)) +
           panel.background = element_rect(fill = "white",
                                           colour = "black",
                                           size = 0.5, linetype = "solid"),
-          #plot.background = element_rect(fill = "grey"),
           panel.grid.major = element_line(size = 0.5, linetype = 'solid',
                                           colour = "grey"),
           panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
@@ -68,12 +67,12 @@ ggplot(data=aa, aes(method, score)) +
     facet_wrap(~forest, nrow=2, scales="free_y")
 dev.off()
 
-pdf('figures/boxplot_linearnonlinear.pdf', height=13)
-aa=cbind.data.frame(unlist(scores_22),rep(names(scores_22), each = 500))
-colnames(aa)= c("score", "method")
-aa$forest = as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
-aa$method = as.factor(sub("\\ \\(forest\\)","", aa$method))
-aa$method = as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
+pdf('../figures/boxplot_linearnonlinear.pdf', height=13)
+aa <- cbind.data.frame(unlist(scores_22), rep(names(scores_22), each = 500))
+colnames(aa) <- c("score", "method")
+aa$forest <- as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
+aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
+aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
     geom_boxplot(outlier.alpha = 0.5, fill = viridis(14)) +
@@ -85,7 +84,6 @@ ggplot(data=aa, aes(method, score)) +
           panel.background = element_rect(fill = "white",
                                           colour = "black",
                                           size = 0.5, linetype = "solid"),
-          #plot.background = element_rect(fill = "grey"),
           panel.grid.major = element_line(size = 0.5, linetype = 'solid',
                                           colour = "grey"),
           panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
@@ -96,12 +94,12 @@ ggplot(data=aa, aes(method, score)) +
     facet_wrap(~forest, nrow=2, scales = "free_y")
 dev.off()
 
-pdf('figures/boxplot_nonlinearnonlinear.pdf', height=13)
-aa=cbind.data.frame(unlist(scores_23),rep(names(scores_23), each = 500))
-colnames(aa)= c("score", "method")
-aa$forest = as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
-aa$method = as.factor(sub("\\ \\(forest\\)","", aa$method))
-aa$method = as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
+pdf('../figures/boxplot_nonlinearnonlinear.pdf', height=13)
+aa <- cbind.data.frame(unlist(scores_23), rep(names(scores_23), each = 500))
+colnames(aa) <- c("score", "method")
+aa$forest <- as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
+aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
+aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
     geom_boxplot(outlier.alpha = 0.5, fill = viridis(14)) +
@@ -113,7 +111,6 @@ ggplot(data=aa, aes(method, score)) +
           panel.background = element_rect(fill = "white",
                                           colour = "black",
                                           size = 0.5, linetype = "solid"),
-          #plot.background = element_rect(fill = "grey"),
           panel.grid.major = element_line(size = 0.5, linetype = 'solid',
                                           colour = "grey"),
           panel.grid.minor = element_line(size = 0.25, linetype = 'solid',

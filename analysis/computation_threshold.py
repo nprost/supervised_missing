@@ -1,3 +1,5 @@
+"""This is the code for figure 1."""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
@@ -18,4 +20,4 @@ plt.plot(p, argminfp)
 plt.xlabel(r"$p$")
 plt.ylabel(r"$s^\star_{MIA}(p)$")
 plt.tight_layout()
-plt.savefig("/home/nicolas/overleaf/sup_learn_miss_val/figures/threshold.png")
+plt.savefig("../figures/threshold.png")

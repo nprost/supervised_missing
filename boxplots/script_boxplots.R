@@ -1,10 +1,12 @@
 #!/usr/bin/env Rscript
 cmd.args = commandArgs(trailingOnly=TRUE)
 cmd.args = sapply(cmd.args, as.numeric)
-n_cores = cmd.args[1]
+if (length(cmd.args) > 0) {
+    n_cores = cmd.args[1]
+} else n_cores = 1
 
 # This runs consistency results (score: MSE) for different parameters,
-# in parallel, with n_cores cores.
+# in parallel, with n_cores cores
 
 dir.create(file.path('results'), showWarnings=FALSE)
 
@@ -15,13 +17,15 @@ cat("This script runs consistency results for
     * several methods: surrogates (not RF) (+ mask), gaussian imputation (+ mask),
     mean imputation (+ mask), MIA
     ")
-#Sys.sleep(5)
 cat("Starting R script\n")
 
 set.seed(42)  # so .Random.seed exists
 
 library(norm)
 rngseed(123)  # for the EM imputation
+
+# 1 for figure 3, 2 for figure 4
+boxplot_choice = 1
 
 ################################################################################
 library(doParallel)
@@ -32,12 +36,14 @@ registerDoSNOW(cl)
 
 Parallel <- function(dataset) {
     iter.seed <- 15
-    sizes = c(1000)
-    n_rep = 500
-    prob = 0.2
-    #n_features = 3  # for boxplot 1
-    n_features = 10  # forboxplot 2
-    #noise = 2
+    sizes <- c(1000)
+    n_rep <- 500
+    prob <- 0.2
+    if (boxplot_choice == 1) {
+        n_features = 3
+    } else if (boxplot_choice == 2) {
+        n_features = 10
+    }
     noise = 0.1
     min_samples_leaf = 30
     rho = 0.5
@@ -73,19 +79,20 @@ Parallel <- function(dataset) {
     return(results.list)
 }
 
-# boxplot 1
-#scores_mcar <- Parallel("make_data1")
-#save(scores_mcar, file="results/boxplot_MCAR.RData")
-#scores_mar <- Parallel("make_data2")
-#save(scores_mar, file="results/boxplot_MAR.RData")
-#scores_mnar <- Parallel("make_data3")
-#save(scores_mnar, file="results/boxplot_MNAR.RData")
-# boxplot 2
-scores_21 <- Parallel("make_data4")
-save(scores_21, file="results/boxplot2_1.RData")
-scores_22 <- Parallel("make_data5")
-save(scores_22, file="results/boxplot2_2.RData")
-scores_23 <- Parallel("make_data6")
-save(scores_23, file="results/boxplot2_3.RData")
+if (boxplot_choice == 1) {
+    scores_mcar <- Parallel("make_data1")
+    save(scores_mcar, file="results/boxplot_MCAR.RData")
+    scores_mar <- Parallel("make_data2")
+    save(scores_mar, file="results/boxplot_MAR.RData")
+    scores_mnar <- Parallel("make_data3")
+    save(scores_mnar, file="results/boxplot_MNAR.RData")
+} else if (boxplot_choice == 2) {
+    scores_21 <- Parallel("make_data4")
+    save(scores_21, file="results/boxplot2_1.RData")
+    scores_22 <- Parallel("make_data5")
+    save(scores_22, file="results/boxplot2_2.RData")
+    scores_23 <- Parallel("make_data6")
+    save(scores_23, file="results/boxplot2_3.RData")
+} else stop("Invalid boxplot_choice")
 
 stopCluster(cl)

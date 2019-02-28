@@ -1,3 +1,5 @@
+"""This is the code for figure 2."""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
@@ -53,5 +55,5 @@ for count, (ax, eta) in enumerate(zip(axs, [0., 0.25, 0.75])):
 fig.legend(loc=(0.35, 0.05), ncol=2, frameon=False)
 plt.tight_layout()
 fig.subplots_adjust(bottom=0.3)
-fig.savefig("/home/nicolas/overleaf/sup_learn_miss_val/figures/theo_risk2.pdf")
+fig.savefig("../figures/theo_risk2.pdf")
 plt.close(fig)

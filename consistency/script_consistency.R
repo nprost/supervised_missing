@@ -1,18 +1,19 @@
 #!/usr/bin/env Rscript
 cmd.args = commandArgs(trailingOnly=TRUE)
 cmd.args = sapply(cmd.args, as.numeric)
-n_cores = cmd.args[1]
-
+if (length(cmd.args) > 0) {
+    n_cores = cmd.args[1]
+} else n_cores = 1
 # This runs consistency results (score: MSE) for different parameters,
 # in parallel, with n_cores cores.
 
-sizes = floor(10**seq(2,5,length.out=20))
-n_rep = 200
-prob = 0.4
-n_features = 10
-noise = 0.1
-min_samples_leaf = 30
-rho = 0.5
+sizes <- floor(10**seq(2,5,length.out=20))
+n_rep <- 200
+prob <- 0.4
+n_features <- 10
+noise <- 0.1
+min_samples_leaf <- 30
+rho <- 0.5
 
 dir.create(file.path('results'), showWarnings=FALSE)
 
@@ -23,7 +24,6 @@ cat("This script runs consistency results for
     * several methods: surrogates (not RF) (+ mask), gaussian imputation (+ mask),
     mean imputation (+ mask), MIA
     ")
-#Sys.sleep(5)
 cat("Starting R script\n")
 
 set.seed(42)  # so .Random.seed exists
