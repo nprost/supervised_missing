@@ -50,7 +50,7 @@ make_data3 <- function(size=100, noise=0.1, prob=0.4, rho=0.5, dim=10) {
     X8 <- 1 / (sin(2*Xi) - 2) + rnorm(size, sd=xnoise)
     X9 <- - Xi**4 + rnorm(size, sd=xnoise)
     X <- cbind.data.frame(X0, X1, X2, X3, X4, X5, X6, X7, X8, X9)
-    y <- 10*sin(pi*X[, 1]*X[, 2]) + 20*(X[, 3]-0.5)**2 + 10*X[, 4] + 5*X[, 5] 
+    y <- 10*sin(pi*X[, 1]*X[, 2]) + 20*(X[, 3]-0.5)**2 + 10*X[, 4] + 5*X[, 5]
     y <- y + noise*rnorm(size)
     M <- matrix(rbinom(size*dim, size=1, prob=prob), ncol=dim)
     X[M==1] <- NA
@@ -111,12 +111,12 @@ fit.preprocess <- function(df, strategy, withpattern) {
     if (strategy == "mean") {
         mu <- apply(X, 2, mean, na.rm = TRUE)
         parameters <- list(mean=mu)
-        
+
     } else if (strategy == "gaussian") {
         s <- prelim.norm(as.matrix(X))
         thetahat <- em.norm(s, showits= FALSE, criterion=sqrt(.Machine$double.eps))
         parameters <- getparam.norm(s, thetahat)
-        
+
     } else parameters <- list()
 
     return(parameters)
@@ -132,7 +132,7 @@ preprocess <- function(df, strategy, withpattern, parameters) {
 
     if (strategy == "mean") {
         mu <- parameters[["mean"]]
-        X.imput <- sapply(1:ncol(X), 
+        X.imput <- sapply(1:ncol(X),
             function(x) ifelse(is.na(X[, x]), mu[x], X[, x]))
         X.imput <- as.data.frame(X.imput)
         colnames(X.imput) <- colnames(X)
@@ -153,7 +153,7 @@ preprocess <- function(df, strategy, withpattern, parameters) {
 
     if (withpattern==TRUE) {
         indicators.factor <- data.frame(apply(indicators, 2, as.factor))
-        indicators.addfactor <- data.frame(lapply(indicators.factor, 
+        indicators.addfactor <- data.frame(lapply(indicators.factor,
             function(col) factor(col, levels=c("FALSE", "TRUE"))))
         indsansNA <- which((sapply(indicators.factor, nlevels)) == 1)
         X.imput <- cbind.data.frame(X.imput, indicators.addfactor[, -indsansNA])
@@ -170,8 +170,8 @@ preprocess <- function(df, strategy, withpattern, parameters) {
 ################################ SCORES ########################################
 ################################################################################
 run_scores <- function(model, strategy, withpattern, dataset,
-                       sizes, n_rep, prob, n_features, noise, rho, 
-                       min_samples_leaf, seed, debug=FALSE) {
+                       sizes, n_rep, prob, n_features, noise, rho,
+                       min_samples_leaf, seed, num.threads.ranger, debug=FALSE) {
     #' model: "rpart", "ctree", "ranger"
     #' strategy: "none", "mean", "gaussian", "mia"
     #' withpattern: TRUE, FALSE
@@ -223,7 +223,7 @@ run_scores <- function(model, strategy, withpattern, dataset,
                     (minbucket=min_samples_leaf, mincriterion=0.0))
                 res <- predict(reg, subset(test, select=-c(y)))
             } else if (model == "ranger") {
-                reg <- ranger(y~., data=train, num.threads=1, verbose=F)
+                reg <- ranger(y~., data=train, num.threads=num.threads.ranger, verbose=F)
                 res <- predict(reg, subset(test, select=-c(y)))$predictions
             } else stop("Invalid model")
 
@@ -247,7 +247,7 @@ run_scores <- function(model, strategy, withpattern, dataset,
         return(result)
     } else {
         write.table(result, sep=" ", row.names=FALSE,
-            file=paste0("results/", dataset, "_", model, "_", 
+            file=paste0("results/", dataset, "_", model, "_",
                         strategy, "_", withpattern, ".csv"))
     }
 }

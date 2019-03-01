@@ -1,12 +1,18 @@
 #!/usr/bin/env Rscript
 cmd.args = commandArgs(trailingOnly=TRUE)
 cmd.args = sapply(cmd.args, as.numeric)
+
 if (length(cmd.args) > 0) {
-    n_cores = cmd.args[1]
-} else n_cores = 1
+    n.jobs = cmd.args[1]
+} else n.jobs = 1
+
+if (length(cmd.args) > 1) {
+    num.threads.ranger = cmd.args[2]
+} else num.threads.ranger = 1
+
 
 # This runs consistency results (score: MSE) for different parameters,
-# in parallel, with n_cores cores
+# in parallel, with n.jobs jobs and num.threads.ranger cores per forest
 
 dir.create(file.path('results'), showWarnings=FALSE)
 
@@ -31,7 +37,7 @@ boxplot_choice = 1
 library(doParallel)
 library(doSNOW)
 
-cl <- makeCluster(n_cores, outfile="")
+cl <- makeCluster(n.jobs, outfile="")
 registerDoSNOW(cl)
 
 Parallel <- function(dataset) {
@@ -68,7 +74,8 @@ Parallel <- function(dataset) {
         run_scores(model=param$model, strategy=param$strategy, withpattern=param$withpattern,
                    dataset=param$dataset,
                    sizes=sizes, n_rep=n_rep, prob=prob, n_features=n_features, noise=noise,
-                   min_samples_leaf=min_samples_leaf, rho=rho, seed=iter.seed, debug=FALSE)
+                   min_samples_leaf=min_samples_leaf, rho=rho, seed=iter.seed,
+                   num.threads.ranger=num.threads.ranger, debug=FALSE)
     }
     names(results.list) <- c(
         "rpart (surrogates)", "rpart (surrogates) + mask", "impute mean", "impute mean + mask",
