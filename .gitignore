@@ -1,0 +1,6 @@
+**.RData
+**/Rhistory
+**/results
+figures/
+**/__pycache__
+

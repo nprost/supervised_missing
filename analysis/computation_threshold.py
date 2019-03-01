@@ -1,9 +1,12 @@
 """This is the code for figure 1."""
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.rcParams.update({'font.size': 16})
+
+if not os.path.exists("../figures"): os.mkdir("../figures")
 
 def critmia(s, p):
     t1 = 1/3
