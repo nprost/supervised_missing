@@ -8,9 +8,11 @@ Julie Josse, Nicolas Prost, Erwan Scornet, Gaël Varoquaux. On the consistency o
 
 The directory **analysis** contains the code for figures 1 and 2 (section 5).
 
-**boxplots** corresponds to figures 3 and 4 (section 6). There are three separate files: one containing the functions, one containing the script for computation (parallelized "for" loop, but with one core per forest), and two for the visualisation, one of each of the two boxplots.
+**boxplots** corresponds to figures 3 and 4 (section 6). There are three separate files: one containing the functions, one containing the script for computation, and two for the visualisation (one of each of the two boxplots).
 
 **consistency** is used for figure 5 (section 6). There are three files as for the boxplot, but in addition, approximate Bayes rates are computed in *bayesrates.R* with oracle multiple imputation, as detailed in the paper. 
+
+For scripts: give between 0 and 2 arguments to Rscript (e.g. "~$ Rscript 5 10"): the first one is the number of jobs to parallelize the "for" loop, the second is the number of cores for each ranger forest.
 
 All figure outputs go to the directory **figures** (created when necessary).
 
