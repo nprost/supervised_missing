@@ -22,6 +22,7 @@ names(scores_mnar) <- c(
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
     "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "1. MIA (forest)")
 
+dir.create(file.path('../figures'), showWarnings=FALSE)
 
 library(ggplot2)
 library(gridExtra)

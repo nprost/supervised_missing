@@ -12,6 +12,7 @@ The directory **analysis** contains the code for figures 1 and 2 (section 5).
 
 **consistency** is used for figure 5 (section 6). There are three files as for the boxplot, but in addition, approximate Bayes rates are computed in *bayesrates.R* with oracle multiple imputation, as detailed in the paper. 
 
-All figure outputs go to the directory **figures**.
+All figure outputs go to the directory **figures** (created when necessary).
 
-February 28, 2019
+Nicolas Prost
+March 1, 2019

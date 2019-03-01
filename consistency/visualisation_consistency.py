@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.rcParams.update({'font.size': 12})
 
+if not os.path.exists("../figures"): os.mkdir("../figures")
+
 ###############################################################################
 # GET CORRECT VECTOR FOR PLOTTING
 
@@ -232,4 +234,4 @@ plt.tight_layout()
 fig.subplots_adjust(bottom=0.27, top=0.9, right=0.95)
 #plt.show()
 fig.savefig('../figures/consistency_log_merge.pdf')
-plt.close(fig)
+plt.close(fig)  
