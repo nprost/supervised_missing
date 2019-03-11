@@ -90,10 +90,8 @@ scores = [{key: (val.mean(0), val.std(0))
 L = len(sizes)
 scores[0]['Bayes rate'] = (np.repeat(0.8087995, L), np.repeat(0, L))
 scores[1]['Bayes rate'] = (np.repeat(0.7484916, L), np.repeat(0, L))
-scores[2]['Bayes rate'] = (np.repeat(0.9951507, L), np.repeat(0, L))
 scores[3]['Bayes rate'] = (np.repeat(0.8087995, L), np.repeat(0, L))
 scores[4]['Bayes rate'] = (np.repeat(0.7484916, L), np.repeat(0, L))
-scores[5]['Bayes rate'] = (np.repeat(0.9951507, L), np.repeat(0, L))
 
 
 ###############################################################################
@@ -143,7 +141,7 @@ ax[0,0].grid()
 for name, scr in scores[1].items():
     means = np.array(scr[0])
     stds = np.array(scr[1])
-    if '+ indicator' in name:
+    if '+ mask' in name:
         linestyle = ':'
     else:
         linestyle = '-'
@@ -161,7 +159,7 @@ ax[0,1].grid()
 for name, scr in scores[2].items():
     means = np.array(scr[0])
     stds = np.array(scr[1])
-    if '+ indicator' in name:
+    if '+ mask' in name:
         linestyle = ':'
     else:
         linestyle = '-'
@@ -197,7 +195,7 @@ ax[1,0].grid()
 for name, scr in scores[4].items():
     means = np.array(scr[0])
     stds = np.array(scr[1])
-    if '+ indicator' in name:
+    if '+ mask' in name:
         linestyle = ':'
     else:
         linestyle = '-'
@@ -214,7 +212,7 @@ ax[1,1].grid()
 for name, scr in scores[5].items():
     means = np.array(scr[0])
     stds = np.array(scr[1])
-    if '+ indicator' in name:
+    if '+ mask' in name:
         linestyle = ':'
     else:
         linestyle = '-'
