@@ -7,8 +7,8 @@ if (length(cmd.args) > 0) {
 } else n.jobs = 1
 
 if (length(cmd.args) > 1) {
-    num.threads.ranger = cmd.args[2]
-} else num.threads.ranger = 1
+    num.threads = cmd.args[2]
+} else num.threads = 1
 
 
 # This runs consistency results (score: MSE) for different parameters,
@@ -31,7 +31,7 @@ library(norm)
 rngseed(123)  # for the EM imputation
 
 # 1 for figure 3, 2 for figure 4
-boxplot_choice = 1
+boxplot_choice <- 1
 
 ################################################################################
 library(doParallel)
@@ -40,7 +40,7 @@ library(doSNOW)
 cl <- makeCluster(n.jobs, outfile="")
 registerDoSNOW(cl)
 
-Parallel <- function(dataset) {
+Parallel <- function(dataset, num.threads.ranger=num.threads) {
     iter.seed <- 15
     sizes <- c(1000)
     n_rep <- 500
@@ -87,12 +87,14 @@ Parallel <- function(dataset) {
 }
 
 if (boxplot_choice == 1) {
-    scores_mcar <- Parallel("make_data1")
-    save(scores_mcar, file="results/boxplot_MCAR.RData")
-    scores_mar <- Parallel("make_data2")
-    save(scores_mar, file="results/boxplot_MAR.RData")
-    scores_mnar <- Parallel("make_data3")
-    save(scores_mnar, file="results/boxplot_MNAR.RData")
+    #scores_mcar <- Parallel("make_data1")
+    #save(scores_mcar, file="results/boxplot_MCAR.RData")
+    #scores_mar <- Parallel("make_data2")
+    #save(scores_mar, file="results/boxplot_MAR.RData")
+    #scores_mnar <- Parallel("make_data3")
+    #save(scores_mnar, file="results/boxplot_MNAR.RData")
+    scores_pred <- Parallel("make_data3bis")
+    save(scores_pred, file="results/boxplot_PRED.RData")
 } else if (boxplot_choice == 2) {
     scores_21 <- Parallel("make_data4")
     save(scores_21, file="results/boxplot2_1.RData")

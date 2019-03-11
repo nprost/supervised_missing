@@ -52,6 +52,20 @@ make_data3 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
 }
 
 
+#Predictive M1
+make_data3bis <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
+    Sigma <- rho*matrix(rep(1, dim**2), nrow=dim)+(1-rho)*diag(1, nrow=dim)
+    X <- as.data.frame(mvrnorm(size, mu=rep(1, dim), Sigma=Sigma))
+    y <- X[, 1]**2 + rnorm(size, sd=noise)
+    M <- rbinom(size, 1, prob=prob)
+    X[M==1, 1] <- NA
+    y <- y + 3*M
+    result <- cbind(y, as.data.frame(X))
+    colnames(result)[1] <- "y"
+    return(result)
+}
+
+
 # SECOND BOXPLOT
 ################################################################################
 #MCAR, linear
@@ -245,6 +259,8 @@ run_scores <- function(model, strategy, withpattern, dataset,
                 data.raw <- make_data2(size, noise, prob, rho, n_features)
             } else if (dataset == "make_data3") {
                 data.raw <- make_data3(size, noise, prob, rho, n_features)
+            } else if (dataset == "make_data3bis") {
+                data.raw <- make_data3bis(size, noise, prob, rho, n_features)
             } else if (dataset == "make_data4") {
                 data.raw <- make_data4(size, noise, prob, rho, n_features)
             } else if (dataset == "make_data5") {
