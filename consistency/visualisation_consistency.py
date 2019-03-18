@@ -21,13 +21,14 @@ for i in range(3):
     dataset="make_data{}".format(i+1)
     for method in [
         {'model': 'rpart', 'strategy': 'none', 'withpattern': "FALSE"},
-        {'model': 'rpart', 'strategy': 'none', 'withpattern': "TRUE"},
+        #{'model': 'rpart', 'strategy': 'none', 'withpattern': "TRUE"},
         {'model': 'rpart', 'strategy': 'mean', 'withpattern': "FALSE"},
-        {'model': 'rpart', 'strategy': 'mean', 'withpattern': "TRUE"},
+        #{'model': 'rpart', 'strategy': 'mean', 'withpattern': "TRUE"},
         {'model': 'rpart', 'strategy': 'gaussian', 'withpattern': "FALSE"},
-        {'model': 'rpart', 'strategy': 'gaussian', 'withpattern': "TRUE"},
+        #{'model': 'rpart', 'strategy': 'gaussian', 'withpattern': "TRUE"},
         {'model': 'rpart', 'strategy': 'mia', 'withpattern': "FALSE"},
         {'model': 'ctree', 'strategy': 'none', 'withpattern': "FALSE"},
+        {'model': 'xgboost_onetree', 'strategy': 'none', 'withpattern': "FALSE"},
         ]:
         model, strategy, withpattern = tuple(method.values())
 
@@ -41,8 +42,10 @@ for i in range(3):
             elif strategy == "none":
                 if model == "rpart": method_name = "rpart (surrogates)"
                 elif model == "ctree": method_name = "ctree (surrogates)"
+                elif model == "xgboost_onetree": method_name = "xgboost (block)"
             if withpattern == "TRUE": method_name += " + mask"
             if model == "ranger": method_name += " - forest"
+            if model == "xgboost": method_name += " - forest"
     
             scorerawi[method_name] = np.array(scores_method)[:,3:]
     scores_raw.append(scorerawi)
@@ -53,10 +56,11 @@ for i in range(3):
     dataset="make_data{}".format(i+1)
     for method in [
         {'model': 'ranger', 'strategy': 'mean', 'withpattern': "FALSE"},
-        {'model': 'ranger', 'strategy': 'mean', 'withpattern': "TRUE"},
+        #{'model': 'ranger', 'strategy': 'mean', 'withpattern': "TRUE"},
         {'model': 'ranger', 'strategy': 'gaussian', 'withpattern': "FALSE"},
-        {'model': 'ranger', 'strategy': 'gaussian', 'withpattern': "TRUE"},
+        #{'model': 'ranger', 'strategy': 'gaussian', 'withpattern': "TRUE"},
         {'model': 'ranger', 'strategy': 'mia', 'withpattern': "FALSE"},
+        {'model': 'xgboost', 'strategy': 'none', 'withpattern': "FALSE"},
         ]:
         model, strategy, withpattern = tuple(method.values())
 
@@ -70,9 +74,10 @@ for i in range(3):
             elif strategy == "none":
                 if model == "rpart": method_name = "rpart (surrogates)"
                 elif model == "ctree": method_name = "ctree (surrogates)"
+                elif model == "xgboost_onetree": method_name = "xgboost (block)"
             if withpattern == "TRUE": method_name += " + mask"
             if model == "ranger": method_name += " - forest"
-    
+            if model == "xgboost": method_name += " - forest"    
             scorerawi[method_name] = np.array(scores_method)[:,3:]
     scores_raw.append(scorerawi)
 
@@ -104,20 +109,22 @@ fig, ax = plt.subplots(2, 3, figsize=(10, 7))
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 colors_dict = {
     'rpart (surrogates)': colors[0],
-    'rpart (surrogates) + mask': colors[0],
+    #'rpart (surrogates) + mask': colors[0],
     'ctree (surrogates)': colors[5],
-    'ctree (surrogates) + mask': colors[5],
+    #'ctree (surrogates) + mask': colors[5],
     'Mean imputation': colors[1],
-    'Mean imputation + mask': colors[1],
-    'MIA': colors[2],
+    #'Mean imputation + mask': colors[1],
+    'xgboost (block)': colors[6],
+    'xgboost (block) - forest': colors[6],
+    'MIA': colors[4],
+    'MIA - forest': colors[4],
     'Gaussian imputation': colors[3],
-    'Gaussian imputation + mask': colors[3],
-    'Bayes rate': colors[4],
+    #'Gaussian imputation + mask': colors[3],
     'Mean imputation - forest': colors[1],
-    'Mean imputation + mask - forest': colors[1],
+    #'Mean imputation + mask - forest': colors[1],
     'Gaussian imputation - forest': colors[3],
-    'Gaussian imputation + mask - forest': colors[3],
-    'MIA - forest': colors[2],
+    #'Gaussian imputation + mask - forest': colors[3],
+    'Bayes rate': colors[2],
 }
 ###############################################################################
 for name, scr in scores[0].items():
@@ -168,7 +175,7 @@ for name, scr in scores[2].items():
 ax[0,2].set_xlabel("Sample size")
 ax[0,2].set_ylabel("Explained variance")
 ax[0,2].set_ylim(
-    np.array([s[0] for _, s in scores[2].items()]).min()-0.05,
+    np.array([s[0] for _, s in scores[2].items()]).min()-0.01,
     np.array([s[0] for _, s in scores[2].items()]).max()+0.05
 )
 ax[0,2].text(10**3, 1.12, "Non-linear problem\n(low noise)")
@@ -187,8 +194,8 @@ for name, scr in scores[3].items():
 ax[1,0].set_xlabel("Sample size")
 ax[1,0].set_ylabel("Explained variance")
 ax[1,0].set_ylim(
-    np.array([s[0] for _, s in scores[3].items()]).min()-0.05,
-    np.array([s[0] for _, s in scores[3].items()]).max()+0.05
+    np.array([s[0] for _, s in scores[3].items()]).min()-0.01,
+    np.array([s[0] for _, s in scores[3].items()]).max()+0.01
 )
 ax[1,0].grid()
 ###############################################################################
@@ -204,8 +211,8 @@ for name, scr in scores[4].items():
 ax[1,1].set_xlabel("Sample size")
 ax[1,1].set_ylabel("Explained variance")
 ax[1,1].set_ylim(
-    np.array([s[0] for _, s in scores[4].items()]).min()-0.05,
-    np.array([s[0] for _, s in scores[4].items()]).max()+0.05
+    np.array([s[0] for _, s in scores[4].items()]).min()-0.015,
+    np.array([s[0] for _, s in scores[4].items()]).max()+0.015
 )
 ax[1,1].grid()
 ###############################################################################
@@ -221,8 +228,8 @@ for name, scr in scores[5].items():
 ax[1,2].set_xlabel("Sample size")
 ax[1,2].set_ylabel("Explained variance")
 ax[1,2].set_ylim(
-    np.array([s[0] for _, s in scores[5].items()]).min()-0.01,
-    np.array([s[0] for _, s in scores[5].items()]).max()+0.01
+    np.array([s[0] for _, s in scores[5].items()]).min()-0.005,
+    np.array([s[0] for _, s in scores[5].items()]).max()+0.005
 )
 ax[1,2].text(2*10**5, 1, "RANDOM FOREST", rotation=-90, fontweight='bold')
 ax[1,2].grid()

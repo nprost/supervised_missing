@@ -7,8 +7,8 @@ if (length(cmd.args) > 0) {
 } else n.jobs = 1
 
 if (length(cmd.args) > 1) {
-    num.threads.ranger = cmd.args[2]
-} else num.threads.ranger = 1
+    num.threads = cmd.args[2]
+} else num.threads = 1
 
 
 # This runs consistency results (score: MSE) for different parameters,
@@ -42,51 +42,101 @@ rngseed(123)  # for the EM imputation
 library(doParallel)
 library(doSNOW)
 
-cl <- makeCluster(n_cores, outfile="")
+cl <- makeCluster(n.jobs, outfile="")
 registerDoSNOW(cl)
 
 iter.seed <- 15
 
 foreach (param = list(
-    list(dataset="make_data1", model='rpart', strategy='none', withpattern=FALSE),
-    list(dataset="make_data1", model='rpart', strategy='none', withpattern=TRUE),
-    list(dataset="make_data1", model='rpart', strategy='mean', withpattern=FALSE),
-    list(dataset="make_data1", model='rpart', strategy='mean', withpattern=TRUE),
-    list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=FALSE),
-    list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=TRUE),
-    list(dataset="make_data1", model='rpart', strategy='mia', withpattern=FALSE),
-    list(dataset="make_data1", model='ctree', strategy='none', withpattern=FALSE),
-    list(dataset="make_data1", model='ranger', strategy='mean', withpattern=FALSE),
-    list(dataset="make_data1", model='ranger', strategy='mean', withpattern=TRUE),
-    list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=FALSE),
-    list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=TRUE),
-    list(dataset="make_data1", model='ranger', strategy='mia', withpattern=FALSE),
-    list(dataset="make_data2", model='rpart', strategy='none', withpattern=FALSE),
-    list(dataset="make_data2", model='rpart', strategy='none', withpattern=TRUE),
-    list(dataset="make_data2", model='rpart', strategy='mean', withpattern=FALSE),
-    list(dataset="make_data2", model='rpart', strategy='mean', withpattern=TRUE),
-    list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=FALSE),
-    list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=TRUE),
-    list(dataset="make_data2", model='rpart', strategy='mia', withpattern=FALSE),
-    list(dataset="make_data2", model='ctree', strategy='none', withpattern=FALSE),
-    list(dataset="make_data2", model='ranger', strategy='mean', withpattern=FALSE),
-    list(dataset="make_data2", model='ranger', strategy='mean', withpattern=TRUE),
-    list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=FALSE),
-    list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=TRUE),
-    list(dataset="make_data2", model='ranger', strategy='mia', withpattern=FALSE),
-    list(dataset="make_data3", model='rpart', strategy='none', withpattern=FALSE),
-    list(dataset="make_data3", model='rpart', strategy='none', withpattern=TRUE),
-    list(dataset="make_data3", model='rpart', strategy='mean', withpattern=FALSE),
-    list(dataset="make_data3", model='rpart', strategy='mean', withpattern=TRUE),
-    list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=FALSE),
-    list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=TRUE),
-    list(dataset="make_data3", model='rpart', strategy='mia', withpattern=FALSE),
-    list(dataset="make_data3", model='ctree', strategy='none', withpattern=FALSE),
-    list(dataset="make_data3", model='ranger', strategy='mean', withpattern=FALSE),
-    list(dataset="make_data3", model='ranger', strategy='mean', withpattern=TRUE),
-    list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=FALSE),
-    list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=TRUE),
-    list(dataset="make_data3", model='ranger', strategy='mia', withpattern=FALSE)
+    #list(dataset="make_data1", model='rpart', strategy='none', withpattern=FALSE)
+    
+    #list(dataset="make_data1", model='rpart', strategy='none', withpattern=TRUE)
+    #,
+    #list(dataset="make_data1", model='rpart', strategy='mean', withpattern=FALSE)
+    #,
+    #list(dataset="make_data1", model='rpart', strategy='mean', withpattern=TRUE)
+    #,
+    #list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=FALSE)
+    #,
+    #list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=TRUE)
+    #,
+    #list(dataset="make_data1", model='rpart', strategy='mia', withpattern=FALSE)
+    #,
+    #list(dataset="make_data1", model='ctree', strategy='none', withpattern=FALSE)
+    #,
+    list(dataset="make_data1", model='xgboost_onetree', strategy='none', withpattern=FALSE)
+    ,
+    #list(dataset="make_data1", model='ranger', strategy='mean', withpattern=FALSE)
+    #,
+    #list(dataset="make_data1", model='ranger', strategy='mean', withpattern=TRUE)
+    #,
+    #list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=FALSE)
+    #,
+    #list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=TRUE)
+    #,
+    #list(dataset="make_data1", model='ranger', strategy='mia', withpattern=FALSE)
+    #,
+    list(dataset="make_data1", model='xgboost', strategy='none', withpattern=FALSE)
+    ,
+    #list(dataset="make_data2", model='rpart', strategy='none', withpattern=FALSE)
+    #,
+    #list(dataset="make_data2", model='rpart', strategy='none', withpattern=TRUE)
+    #,
+    #list(dataset="make_data2", model='rpart', strategy='mean', withpattern=FALSE)
+    #,
+    #list(dataset="make_data2", model='rpart', strategy='mean', withpattern=TRUE)
+    #,
+    #list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=FALSE)
+    #,
+    #list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=TRUE)
+    #,
+    #list(dataset="make_data2", model='rpart', strategy='mia', withpattern=FALSE)
+    #,
+    #list(dataset="make_data2", model='ctree', strategy='none', withpattern=FALSE)
+    #,
+    list(dataset="make_data2", model='xgboost_onetree', strategy='none', withpattern=FALSE)
+    ,
+    #list(dataset="make_data2", model='ranger', strategy='mean', withpattern=FALSE)
+    #,
+    #list(dataset="make_data2", model='ranger', strategy='mean', withpattern=TRUE)
+    #,
+    #list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=FALSE)
+    #,
+    #list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=TRUE)
+    #,
+    #list(dataset="make_data2", model='ranger', strategy='mia', withpattern=FALSE)
+    #,
+    list(dataset="make_data2", model='xgboost', strategy='none', withpattern=FALSE)
+    ,
+    #list(dataset="make_data3", model='rpart', strategy='none', withpattern=FALSE)
+    #,
+    #list(dataset="make_data3", model='rpart', strategy='none', withpattern=TRUE)
+    #,
+    #list(dataset="make_data3", model='rpart', strategy='mean', withpattern=FALSE)
+    #,
+    #list(dataset="make_data3", model='rpart', strategy='mean', withpattern=TRUE)
+    #,
+    #list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=FALSE)
+    #,
+    #list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=TRUE)
+    #,
+    #list(dataset="make_data3", model='rpart', strategy='mia', withpattern=FALSE)
+    #,
+    #list(dataset="make_data3", model='ctree', strategy='none', withpattern=FALSE)
+    #,
+    list(dataset="make_data3", model='xgboost_onetree', strategy='none', withpattern=FALSE)
+    ,
+    #list(dataset="make_data3", model='ranger', strategy='mean', withpattern=FALSE)
+    #,
+    #list(dataset="make_data3", model='ranger', strategy='mean', withpattern=TRUE)
+    #,
+    #list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=FALSE)
+    #,
+    #list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=TRUE)
+    #,
+    #list(dataset="make_data3", model='ranger', strategy='mia', withpattern=FALSE)
+    #,
+    list(dataset="make_data3", model='xgboost', strategy='none', withpattern=FALSE)
 )) %dopar% {
     iter.seed <- iter.seed + 1
     source('functions_consistency.R')
@@ -94,7 +144,7 @@ foreach (param = list(
                dataset=param$dataset,
                sizes=sizes, n_rep=n_rep, prob=prob, n_features=n_features, noise=noise,
                min_samples_leaf=min_samples_leaf, rho=rho, seed=iter.seed,
-               num.threads.ranger=num.threads.ranger, debug=FALSE)
+               num.threads.ranger=num.threads, debugging=FALSE)
 }
 
 stopCluster(cl)

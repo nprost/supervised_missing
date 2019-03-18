@@ -24,3 +24,4 @@ plt.xlabel(r"$p$")
 plt.ylabel(r"$s^\star_{MIA}(p)$")
 plt.tight_layout()
 plt.savefig("../figures/threshold.png")
+

@@ -1,26 +1,29 @@
-load("results/boxplot2_1.RData")
+load("results/boxplot2_1_test.RData")
 load("results/boxplot2_2.RData")
 load("results/boxplot2_3.RData")
 # these are of lists of matrices of shape n_rep*length(sizes)
 
 names(scores_21) <- c(
     "7. rpart (surrogates)", "6. rpart (surrogates) + mask", "3. impute mean", "2. impute mean + mask",
-    "5. impute Gaussian", "4. impute Gaussian + mask", "1. MIA",
+    "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "1. MIA (forest)")
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)", 
+    "1. block", "1. block (forest)")
 names(scores_22) <- c(
     "7. rpart (surrogates)", "6. rpart (surrogates) + mask", "3. impute mean", "2. impute mean + mask",
-    "5. impute Gaussian", "4. impute Gaussian + mask", "1. MIA",
+    "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "1. MIA (forest)")
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)", 
+    "1. block", "1. block (forest)")
 names(scores_23) <- c(
     "7. rpart (surrogates)", "6. rpart (surrogates) + mask", "3. impute mean", "2. impute mean + mask",
-    "5. impute Gaussian", "4. impute Gaussian + mask", "1. MIA",
+    "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "1. MIA (forest)")
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)", 
+    "1. block", "1. block (forest)")
 
 dir.create(file.path('../figures'), showWarnings=FALSE)
 
@@ -41,7 +44,7 @@ scores_21 <- lapply(scores_21, function(x) x-Reduce("+", scores_21) / length(sco
 scores_22 <- lapply(scores_22, function(x) x-Reduce("+", scores_22) / length(scores_22))
 scores_23 <- lapply(scores_23, function(x) x-Reduce("+", scores_23) / length(scores_23))
 
-pdf('../figures/boxplot_linearlinear.pdf', width=9.5, height=13)
+pdf('../figures/boxplot_linearlinear_test.pdf', width=9.5, height=13)
 aa <- cbind.data.frame(unlist(scores_21), rep(names(scores_21), each = 500))
 colnames(aa) <- c("score", "method")
 aa$forest <- as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
@@ -50,7 +53,7 @@ aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 
 ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    geom_boxplot(outlier.alpha = 0.5, fill = viridis(14)) +
+    geom_boxplot(outlier.alpha = 0.5, fill = viridis(16)) +
     scale_y_continuous(breaks=c(-0.1, -0.05, 0, 0.05, 0.1),
                        labels=c("-0,1", "-0,05", "0,0", "+0.05", "+0,1")) +
     theme(axis.text.x = element_text(face="bold", size=22),
@@ -77,7 +80,7 @@ aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
 aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    geom_boxplot(outlier.alpha = 0.5, fill = viridis(14)) +
+    geom_boxplot(outlier.alpha = 0.5, fill = viridis(16)) +
     scale_y_continuous(breaks=c(-0.4, -0.2, 0, 0.2, 0.4),
                        labels=c("-0,4", "-0,2", "0,0", "+0.2", "+0,4")) +
     theme(axis.text.x = element_text(face="bold", size=22),
@@ -104,7 +107,7 @@ aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
 aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    geom_boxplot(outlier.alpha = 0.5, fill = viridis(14)) +
+    geom_boxplot(outlier.alpha = 0.5, fill = viridis(16)) +
     scale_y_continuous(breaks=c(-0.002, -0.001, 0, 0.001, 0.002),
                        labels=c("-0,002", "-0,001", "0,0", "+0,001", "+0,002")) +
     theme(axis.text.x = element_text(face="bold", size=22),

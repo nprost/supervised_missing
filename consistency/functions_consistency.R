@@ -3,6 +3,7 @@
 library(rpart)
 library(party)
 library(ranger)
+library(xgboost)
 library(MASS)
 library(norm)
 
@@ -171,7 +172,7 @@ preprocess <- function(df, strategy, withpattern, parameters) {
 ################################################################################
 run_scores <- function(model, strategy, withpattern, dataset,
                        sizes, n_rep, prob, n_features, noise, rho,
-                       min_samples_leaf, seed, num.threads.ranger, debug=FALSE) {
+                       min_samples_leaf, seed, num.threads.ranger, debugging=FALSE) {
     #' model: "rpart", "ctree", "ranger"
     #' strategy: "none", "mean", "gaussian", "mia"
     #' withpattern: TRUE, FALSE
@@ -219,12 +220,31 @@ run_scores <- function(model, strategy, withpattern, dataset,
                     minbucket=min_samples_leaf,cp=0.0, xval=1))
                 res <- predict(reg, subset(test, select=-c(y)), type="vector")
             } else if (model == "ctree") {
-                reg <- ctree(y~., data=train, controls=ctree_control
-                    (minbucket=min_samples_leaf, mincriterion=0.0))
+                reg <- ctree(y~., data=train, controls=ctree_control(
+                    minbucket=min_samples_leaf, mincriterion=0.0))
                 res <- predict(reg, subset(test, select=-c(y)))
+            } else if (model == "ctree_mia") {
+                reg <- ctree(y~., data=train, controls=ctree_control(
+                    minbucket=min_samples_leaf, mincriterion=0.0))
+                res <- predict(reg, as.matrix(subset(test, select=-c(y))))
+            } else if (model == "xgboost_onetree") {
+                reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)
+                    ,nrounds=1 ,eta=1 ,max.depth=100 ,num_parallel_tree=1, min_samples_leaf=30
+                    ,verbosity=0 ,subsample=1 ,colsample_bytree=1 ,nthread=num.threads.ranger
+                    )
+                res <- predict(reg, as.matrix(subset(test, select=-c(y))))
             } else if (model == "ranger") {
                 reg <- ranger(y~., data=train, num.threads=num.threads.ranger, verbose=F)
                 res <- predict(reg, subset(test, select=-c(y)))$predictions
+            } else if (model == "cforest") {
+                reg <- cforest(y~., data=train)
+                res <- predict(reg, subset(test, select=-c(y)))
+            } else if (model == "xgboost") {
+                reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)
+                    ,nrounds=1 ,eta=1 ,max.depth=100 ,num_parallel_tree=500, min_samples_leaf=30
+                    ,verbosity=0 ,subsample=0.632 ,colsample_bytree=1 ,nthread=num.threads.ranger
+                    )
+                res <- predict(reg, as.matrix(subset(test, select=-c(y))))
             } else stop("Invalid model")
 
             result[k, iter.size] = mean((test$y - res)**2)
@@ -243,7 +263,7 @@ run_scores <- function(model, strategy, withpattern, dataset,
     message(print.mess,"\r",appendLF=FALSE)
     flush.console()
 
-    if (debug) {
+    if (debugging) {
         return(result)
     } else {
         write.table(result, sep=" ", row.names=FALSE,
