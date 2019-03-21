@@ -48,45 +48,45 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
     min_samples_leaf = 30
     rho = 0.5
     results.list <- foreach (param = list(
-        list(dataset=dataset, model='rpart', strategy='none', withpattern=FALSE)
+        "rpart" = list(dataset=dataset, model='rpart', strategy='none', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='rpart', strategy='none', withpattern=TRUE)
+        "rpart + mask" = list(dataset=dataset, model='rpart', strategy='none', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='rpart', strategy='mean', withpattern=FALSE)
+        "rpart mean" = list(dataset=dataset, model='rpart', strategy='mean', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='rpart', strategy='mean', withpattern=TRUE)
+        "rpart mean + mask" = list(dataset=dataset, model='rpart', strategy='mean', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=FALSE)
+        "rpart gaussian" = list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=TRUE)
+        "rpart gaussian + mask" = list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='rpart', strategy='mia', withpattern=FALSE)
+        "rpart mia" = list(dataset=dataset, model='rpart', strategy='mia', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='ctree', strategy='none', withpattern=FALSE)
+        "ctree" = list(dataset=dataset, model='ctree', strategy='none', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='ctree', strategy='none', withpattern=TRUE)
+        "ctree + mask" = list(dataset=dataset, model='ctree', strategy='none', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='ranger', strategy='mean', withpattern=FALSE)
+        "ranger mean" = list(dataset=dataset, model='ranger', strategy='mean', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='ranger', strategy='mean', withpattern=TRUE)
+        "ranger mean + mask" = list(dataset=dataset, model='ranger', strategy='mean', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=FALSE)
+        "ranger gaussian" = list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=TRUE)
+        "ranger gaussian + mask" = list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='ranger', strategy='mia', withpattern=FALSE)
+        "ranger mia" = list(dataset=dataset, model='ranger', strategy='mia', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='xgboost', strategy='none', withpattern=FALSE)
+        "xgboost" = list(dataset=dataset, model='xgboost', strategy='none', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='xgboost', strategy='mean', withpattern=FALSE)
+        "xgboost mean" = list(dataset=dataset, model='xgboost', strategy='mean', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='xgboost', strategy='mean', withpattern=TRUE)
+        "xgboost mean + mask" = list(dataset=dataset, model='xgboost', strategy='mean', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=FALSE)
+        "xgboost gaussian" = list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=FALSE)
         ,
-        list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=TRUE)
+        "xgboost gaussian + mask" = list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=TRUE)
         ,
-        list(dataset=dataset, model='xgboost', strategy='mia', withpattern=FALSE)
+        "xgboost mia" = list(dataset=dataset, model='xgboost', strategy='mia', withpattern=FALSE)
     )) %dopar% {
         iter.seed <- iter.seed + 1
         source('functions_boxplots.R')
@@ -96,29 +96,7 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
                    min_samples_leaf=min_samples_leaf, rho=rho, seed=iter.seed,
                    num.threads.ranger=num.threads.ranger)
     }
-    # quick and very dirty
-    names(results.list) <- c(
-        "rpart",
-        "rpart + mask",
-        "rpart mean",
-        "rpart mean + mask",
-        "rpart gaussian",
-        "rpart gaussian + mask"
-        "rpart mia"
-        "ctree",
-        "ctree + mask",
-        "ranger mean",
-        "ranger mean + mask",
-        "ranger gaussian",
-        "ranger gaussian + mask"
-        "ranger mia"
-        "xgboost",
-        "xgboost mean",
-        "xgboost mean + mask",
-        "xgboost gaussian",
-        "xgboost gaussian + mask"
-        "xgboost mia"
-        )
+    
     return(results.list)
 }
 
