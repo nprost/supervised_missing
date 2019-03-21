@@ -39,8 +39,6 @@ Rscript boxplots/visualisation_boxplot2.R
 python consistency/visualisation_consistency.R
 ```
 
-Figures
-
 All figure outputs go to the directory **figures** (created when nonexistent).
 
 Nicolas Prost
