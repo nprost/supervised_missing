@@ -13,7 +13,7 @@ if (length(cmd.args) > 1) {
 # This runs consistency results (score: MSE) for different parameters,
 # in parallel, with n.jobs jobs and num.threads.ranger cores per forest
 
-dir.create(file.path('results'), showWarnings=FALSE)
+dir.create(file.path('boxplots/results'), showWarnings=FALSE)
 
 cat("This script runs consistency results for
     * one dataset: Gaussian X, Y=X*2+noise
@@ -89,7 +89,7 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
         "xgboost mia" = list(dataset=dataset, model='xgboost', strategy='mia', withpattern=FALSE)
     )) %dopar% {
         iter.seed <- iter.seed + 1
-        source('functions_boxplots.R')
+        source('boxplots/functions_boxplots.R')
         run_scores(model=param$model, strategy=param$strategy, withpattern=param$withpattern,
                    dataset=param$dataset,
                    sizes=sizes, n_rep=n_rep, prob=prob, n_features=n_features, noise=noise,
@@ -101,45 +101,45 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
 }
 
 if (boxplot_choice == 1 | boxplot_choice == -1) {
-    if (file.exists("results/boxplot_MCAR.RData")) {
-        load("results/boxplot_MCAR.RData")
+    if (file.exists("boxplots/results/boxplot_MCAR.RData")) {
+        load("boxplots/results/boxplot_MCAR.RData")
         res <- Parallel("make_data1", n_features=3)
         scores_mcar <- modifyList(scores_mcar, res)
     } else scores_mcar <- Parallel("make_data1", n_features=3)
-    save(scores_mcar, file="results/boxplot_MCAR.RData")
+    save(scores_mcar, file="boxplots/results/boxplot_MCAR.RData")
 
-    if (file.exists("results/boxplot_MNAR.RData")) {
-        load("results/boxplot_MNAR.RData")
+    if (file.exists("boxplots/results/boxplot_MNAR.RData")) {
+        load("boxplots/results/boxplot_MNAR.RData")
         scores_mnar <- modifyList(scores_mnar, Parallel("make_data3", n_features=3))
     } else scores_mnar <- Parallel("make_data3", n_features=3)
-    save(scores_mnar, file="results/boxplot_MNAR.RData")
+    save(scores_mnar, file="boxplots/results/boxplot_MNAR.RData")
 
-    if (file.exists("results/boxplot_PRED.RData")) {
-        load("results/boxplot_PRED.RData")
+    if (file.exists("boxplots/results/boxplot_PRED.RData")) {
+        load("boxplots/results/boxplot_PRED.RData")
         scores_pred <- modifyList(scores_pred, Parallel("make_data3bis", n_features=3))
     } else scores_pred <- Parallel("make_data3bis", n_features=3)
-    save(scores_pred, file="results/boxplot_PRED.RData")
+    save(scores_pred, file="boxplots/results/boxplot_PRED.RData")
 
 } 
 
 if (boxplot_choice == 2 || boxplot_choice == -1) {
-    if (file.exists("results/boxplot2_1.RData")) {
-        load("results/boxplot2_1.RData")
+    if (file.exists("boxplots/results/boxplot2_1.RData")) {
+        load("boxplots/results/boxplot2_1.RData")
         scores_21 <- modifyList(scores_21, Parallel("make_data4", n_features=10))
     } else scores_21 <- Parallel("make_data4", n_features=10)
-    save(scores_21, file="results/boxplot2_1.RData")
+    save(scores_21, file="boxplots/results/boxplot2_1.RData")
 
-    if (file.exists("results/boxplot2_2.RData")) {
-        load("results/boxplot2_2.RData")
+    if (file.exists("boxplots/results/boxplot2_2.RData")) {
+        load("boxplots/results/boxplot2_2.RData")
         scores_22 <- modifyList(scores_22, Parallel("make_data5", n_features=10))
     } else scores_22 <- Parallel("make_data5", n_features=10)
-    save(scores_22, file="results/boxplot2_2.RData")
+    save(scores_22, file="boxplots/results/boxplot2_2.RData")
 
-    if (file.exists("results/boxplot2_3.RData")) {
-        load("results/boxplot2_3.RData")
+    if (file.exists("boxplots/results/boxplot2_3.RData")) {
+        load("boxplots/results/boxplot2_3.RData")
         scores_23 <- modifyList(scores_23, Parallel("make_data6", n_features=10))
     } else scores_23 <- Parallel("make_data6", n_features=10)
-    save(scores_23, file="results/boxplot2_3.RData")
+    save(scores_23, file="boxplots/results/boxplot2_3.RData")
 
 } else stop("Invalid boxplot_choice")
 

@@ -1,6 +1,6 @@
-load("results/boxplot_MCAR.RData")
-load("results/boxplot_MNAR.RData")
-load("results/boxplot_PRED.RData")
+load("boxplots/results/boxplot_MCAR.RData")
+load("boxplots/results/boxplot_MNAR.RData")
+load("boxplots/results/boxplot_PRED.RData")
 # these are of lists of matrices of shape n_rep*length(sizes)
 
 names(scores_mcar) <- c(
@@ -20,7 +20,7 @@ names(scores_mcar) <- c(
 names(scores_mnar) <- names(scores_mcar)
 names(scores_pred <- names(scores_mcar)
      
-dir.create(file.path('../figures'), showWarnings=FALSE)
+dir.create(file.path('figures'), showWarnings=FALSE)
 
 library(ggplot2)
 library(gridExtra)
@@ -66,7 +66,7 @@ df_for_ggplot <- function(scores) {
 
 width <- 9.5
 height <- 13
-pdf('../figures/boxplot_mcar.pdf', width=width, height=height)
+pdf('figures/boxplot_mcar.pdf', width=width, height=height)
 aa <- df_for_ggplot(scores_mcar)
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
@@ -92,7 +92,7 @@ gt$heights[18] = 6/9 * gt$heights[18]
 grid.draw(gt)
 dev.off()
 
-pdf('../figures/boxplot_mnar.pdf', height=height)
+pdf('figures/boxplot_mnar.pdf', height=height)
 aa <- df_for_ggplot(scores_mnar)
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
@@ -118,7 +118,7 @@ gt$heights[18] = 6/9 * gt$heights[18]
 grid.draw(gt)
 dev.off()
 
-pdf('../figures/boxplot_pred.pdf', height=height)
+pdf('figures/boxplot_pred.pdf', height=height)
 aa <- df_for_ggplot(scores_pred)
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +

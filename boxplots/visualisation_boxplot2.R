@@ -1,6 +1,6 @@
-load("results/boxplot2_1.RData")
-load("results/boxplot2_2.RData")
-load("results/boxplot2_3.RData")
+load("boxplots/results/boxplot2_1.RData")
+load("boxplots/results/boxplot2_2.RData")
+load("boxplots/results/boxplot2_3.RData")
 # these are of lists of matrices of shape n_rep*length(sizes)
 
 names(scores_21) <- c(
@@ -67,7 +67,7 @@ df_for_ggplot <- function(scores) {
 
 width <- 9.5
 height <- 13
-pdf('../figures/boxplot_linearlinear.pdf', width=width, height=height)
+pdf('figures/boxplot_linearlinear.pdf', width=width, height=height)
 aa <- df_for_ggplot(scores_21)
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
@@ -93,7 +93,7 @@ gt$heights[18] = 6/9 * gt$heights[18]
 grid.draw(gt)
 dev.off()
 
-pdf('../figures/boxplot_linearnonlinear.pdf', height=height)
+pdf('figures/boxplot_linearnonlinear.pdf', height=height)
 aa <- df_for_ggplot(scores_22)
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
@@ -119,7 +119,7 @@ gt$heights[18] = 6/9 * gt$heights[18]
 grid.draw(gt)
 dev.off()
 
-pdf('../figures/boxplot_nonlinearnonlinear.pdf', height=height)
+pdf('figures/boxplot_nonlinearnonlinear.pdf', height=height)
 aa <- df_for_ggplot(scores_23)
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +

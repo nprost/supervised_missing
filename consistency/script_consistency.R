@@ -22,7 +22,7 @@ noise <- 0.1
 min_samples_leaf <- 30
 rho <- 0.5
 
-dir.create(file.path('results'), showWarnings=FALSE)
+dir.create(file.path('consistency/results'), showWarnings=FALSE)
 
 cat("This script runs consistency results for
     * three datasets: 1. linear, 2. gaussian Friedman, 3. nongaussian Friedman
@@ -151,7 +151,7 @@ foreach (param = list(
     list(dataset="make_data3", model='xgboost', strategy='mia', withpattern=FALSE)
 )) %dopar% {
     iter.seed <- iter.seed + 1
-    source('functions_consistency.R')
+    source('consistency/functions_consistency.R')
     run_scores(model=param$model, strategy=param$strategy, withpattern=param$withpattern,
                dataset=param$dataset,
                sizes=sizes, n_rep=n_rep, prob=prob, n_features=n_features, noise=noise,

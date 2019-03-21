@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.rcParams.update({'font.size': 12})
 
-if not os.path.exists("../figures"): os.mkdir("../figures")
+if not os.path.exists("figures"): os.mkdir("figures")
 
 ###############################################################################
 # GET CORRECT VECTOR FOR PLOTTING
@@ -44,7 +44,7 @@ for i in range(3):
         ]:
         model, strategy, withpattern = tuple(method.values())
 
-        csvfile = "results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
+        csvfile = "consistency/results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
         if os.path.exists(csvfile): 
             scores_method = pd.read_csv(csvfile, sep=" ")
             method_name = method_name_func(model, strategy, withpattern)
@@ -62,7 +62,7 @@ for i in range(3):
         ]:
         model, strategy, withpattern = tuple(method.values())
 
-        csvfile = "results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
+        csvfile = "consistency/results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
         if os.path.exists(csvfile): 
             scores_method = pd.read_csv(csvfile, sep=" ")
             method_name = method_name_func(model, strategy, withpattern)
@@ -81,7 +81,7 @@ for i in range(3):
         ]:
         model, strategy, withpattern = tuple(method.values())
 
-        csvfile = "results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
+        csvfile = "consistency/results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
         if os.path.exists(csvfile): 
             scores_method = pd.read_csv(csvfile, sep=" ")
             method_name = method_name_func(model, strategy, withpattern)
@@ -317,5 +317,5 @@ ax[2,2].grid()
 fig.legend(loc=(0.17, 0.01), ncol=3, frameon=False)
 plt.tight_layout()
 fig.subplots_adjust(bottom=0.13, top=0.9, right=0.95)
-fig.savefig('../figures/consistency_log_merge.pdf')
+fig.savefig('figures/consistency_log_merge.pdf')
 plt.close(fig)  

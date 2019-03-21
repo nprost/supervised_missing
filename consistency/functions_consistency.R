@@ -255,7 +255,7 @@ run_scores <- function(model, strategy, withpattern, dataset,
         return(result)
     } else {
         write.table(result, sep=" ", row.names=FALSE,
-            file=paste0("results/", dataset, "_", model, "_",
+            file=paste0("consistency/results/", dataset, "_", model, "_",
                         strategy, "_", withpattern, ".csv"))
     }
 }
