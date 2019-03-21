@@ -234,10 +234,10 @@ preprocess <- function(df, strategy, withpattern, parameters) {
 run_scores <- function(model, strategy, withpattern, dataset,
                        sizes, n_rep, prob, n_features, noise, rho,
                        min_samples_leaf, seed, num.threads.ranger) {
-    #' model: "rpart", "ctree", "ranger"
+    #' model: "rpart", "ctree", "ranger", "xgboost"
     #' strategy: "none", "mean", "gaussian", "mia"
     #' withpattern: TRUE, FALSE
-    #' dataset: "make_model1", ..., "make_model6"
+    #' dataset: "make_data1", ..., "make_data6"
 
     #' ctree with mia is buggy. TODO: implement partykit's mia
 
@@ -286,32 +286,9 @@ run_scores <- function(model, strategy, withpattern, dataset,
                 reg <- ctree(y~., data=train, controls=ctree_control(
                     minbucket=min_samples_leaf, mincriterion=0.0))
                 res <- predict(reg, subset(test, select=-c(y)))
-            } else if (model == "ctree_mia") {
-                reg <- ctree(y~., data=train, controls=ctree_control(
-                    minbucket=min_samples_leaf, mincriterion=0.0))
-                res <- predict(reg, as.matrix(subset(test, select=-c(y))))
-            } else if (model == "xgboost_onetree") {
-                sink('sink')
-                reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)
-                    ,nrounds=1 ,eta=1 ,max.depth=100 ,num_parallel_tree=1, min_samples_leaf=30
-                    ,verbose_eval=F ,subsample=1 ,colsample_bytree=1 ,nthread=num.threads.ranger
-                    )
-                res <- predict(reg, as.matrix(subset(test, select=-c(y))))
-                sink()
             } else if (model == "ranger") {
                 reg <- ranger(y~., data=train, num.threads=num.threads.ranger, verbose=F)
                 res <- predict(reg, subset(test, select=-c(y)))$predictions
-            } else if (model == "cforest") {
-                reg <- cforest(y~., data=train)
-                res <- predict(reg, subset(test, select=-c(y)))
-            } else if (model == "xgboost_rf") {
-                sink('sink')
-                reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)
-                    ,nrounds=1 ,eta=1 ,max.depth=100 ,num_parallel_tree=500, min_samples_leaf=1
-                    ,verbose_eval=F ,subsample=0.632 ,colsample_bytree=1 ,nthread=num.threads.ranger
-                    )
-                res <- predict(reg, as.matrix(subset(test, select=-c(y))))
-                sink()
             } else if (model == "xgboost") {
                 sink('sink')
                 reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)

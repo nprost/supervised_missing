@@ -66,7 +66,6 @@ cols <- c('#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
 scores_21[1:9] <- lapply(scores_21[1:9], function(x) x-Reduce("+", scores_21[1:9]) / length(scores_21[1:9]))
 scores_21[10:14] <- lapply(scores_21[10:14], function(x) x-Reduce("+", scores_21[10:14]) / length(scores_21[10:14]))
 scores_21[15:20] <- lapply(scores_21[15:20], function(x) x-Reduce("+", scores_21[15:20]) / length(scores_21[15:20]))
-#scores_mar <- lapply(scores_mar, function(x) x-Reduce("+", scores_mar) / length(scores_mar))
 scores_22[1:9] <- lapply(scores_22[1:9], function(x) x-Reduce("+", scores_22[1:9]) / length(scores_22[1:9]))
 scores_22[10:14] <- lapply(scores_22[10:14], function(x) x-Reduce("+", scores_22[10:14]) / length(scores_22[10:14]))
 scores_22[15:20] <- lapply(scores_22[15:20], function(x) x-Reduce("+", scores_22[15:20]) / length(scores_22[15:20]))
@@ -84,10 +83,7 @@ aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    #geom_boxplot(outlier.alpha = 0.5, fill = viridis(20)) +
     geom_boxplot(outlier.alpha = 0.5, fill = c(cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],cols[3],cols[2],cols[2],cols[4],cols[4],cols[3],cols[6],cols[2],cols[2],cols[4],cols[4])) +
-    #scale_y_continuous(breaks=c(-0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1),
-    #                   labels=c("-0,2", "-0,15", "-0,1", "-0,05", "0,0", "+0.05", "+0,1")) +
     scale_y_continuous(labels=function(x) paste0(symnum(x, c(-Inf, 0, Inf), c("", "+")), x)) +
     theme(axis.text.x = element_text(face="bold", size=22),
           axis.text.y = element_text(face="bold", size=20, angle=15),
@@ -118,11 +114,7 @@ aa$method <- as.factor(sub("\\ \\(xgboost\\)", "", aa$method))
 aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    #geom_boxplot(outlier.alpha = 0.5, fill = viridis(20)) +
     geom_boxplot(outlier.alpha = 0.5, fill = c(cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],cols[3],cols[2],cols[2],cols[4],cols[4],cols[3],cols[6],cols[2],cols[2],cols[4],cols[4])) +
-    #scale_y_continuous(breaks=c(-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4),
-    #                   labels=c("-0,8", "-0,6", "-0,4", "-0,2", "0,0", "+0.2", "+0,4"),
-    #                   ) +
     scale_y_continuous(labels=function(x) paste0(symnum(x, c(-Inf, 0, Inf), c("", "+")), x)) +
     theme(axis.text.x = element_text(face="bold", size=22),
           axis.text.y = element_blank(),
@@ -153,11 +145,7 @@ aa$method <- as.factor(sub("\\ \\(xgboost\\)", "", aa$method))
 aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    #geom_boxplot(outlier.alpha = 0.5, fill = viridis(20)) +
     geom_boxplot(outlier.alpha = 0.5, fill = c(cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],cols[3],cols[2],cols[2],cols[4],cols[4],cols[3],cols[6],cols[2],cols[2],cols[4],cols[4])) +
-    #scale_y_continuous(breaks=c(-0.03, -0.02, -0.01, 0, 0.01, 0.02),
-    #                   labels=c("-0,03", "-0,02", "-0,01", "0,0", "+0,01", "+0,02"),
-    #                   ) +
     scale_y_continuous(labels=function(x) paste0(symnum(x, c(-Inf, 0, Inf), c("", "+")), x)) +
     theme(axis.text.x = element_text(face="bold", size=22),
           axis.text.y = element_blank(),

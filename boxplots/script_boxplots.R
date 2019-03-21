@@ -17,9 +17,9 @@ dir.create(file.path('results'), showWarnings=FALSE)
 
 cat("This script runs consistency results for
     * one dataset: Gaussian X, Y=X*2+noise
-    * three mechanisms: 1. MCAR, 2. MAR, 3. MNAR
-    * two tree models: rpart, ctree, and two forest models: ranger, xgboost
-    * several methods: surrogates (not RF) (+ mask), gaussian imputation (+ mask),
+    * three mechanisms: 1. MCAR, 2. MNAR, 3. PRED
+    * two tree models: rpart, ctree, one forest model: ranger, one boosting model: xgboost
+    * several methods: surrogates (rpart, ctree) (+ mask), gaussian imputation (+ mask),
     mean imputation (+ mask), MIA, block propagation (xgboost)
     ")
 cat("Starting R script\n")
@@ -48,47 +48,45 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
     min_samples_leaf = 30
     rho = 0.5
     results.list <- foreach (param = list(
-        #list(dataset=dataset, model='rpart', strategy='none', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='rpart', strategy='none', withpattern=TRUE)
-        #,
-        #list(dataset=dataset, model='rpart', strategy='mean', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='rpart', strategy='mean', withpattern=TRUE)
-        #,
-        #list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=TRUE)
-        #,
-        #list(dataset=dataset, model='rpart', strategy='mia', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='ctree', strategy='none', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='ctree', strategy='none', withpattern=TRUE)
-        #,
-        #list(dataset=dataset, model='xgboost_onetree', strategy='none', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='ranger', strategy='mean', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='ranger', strategy='mean', withpattern=TRUE)
-        #,
-        #list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=TRUE)
-        #,
-        #list(dataset=dataset, model='ranger', strategy='mia', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='xgboost', strategy='none', withpattern=FALSE)
-        #,
-        #list(dataset=dataset, model='xgboost', strategy='mean', withpattern=FALSE)
-        #,
+        list(dataset=dataset, model='rpart', strategy='none', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='rpart', strategy='none', withpattern=TRUE)
+        ,
+        list(dataset=dataset, model='rpart', strategy='mean', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='rpart', strategy='mean', withpattern=TRUE)
+        ,
+        list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=TRUE)
+        ,
+        list(dataset=dataset, model='rpart', strategy='mia', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='ctree', strategy='none', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='ctree', strategy='none', withpattern=TRUE)
+        ,
+        list(dataset=dataset, model='ranger', strategy='mean', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='ranger', strategy='mean', withpattern=TRUE)
+        ,
+        list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=TRUE)
+        ,
+        list(dataset=dataset, model='ranger', strategy='mia', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='xgboost', strategy='none', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='xgboost', strategy='mean', withpattern=FALSE)
+        ,
         list(dataset=dataset, model='xgboost', strategy='mean', withpattern=TRUE)
         ,
-        #list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=FALSE)
-        #,
+        list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=FALSE)
+        ,
         list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=TRUE)
-        #,
-        #list(dataset=dataset, model='xgboost', strategy='mia', withpattern=FALSE)
+        ,
+        list(dataset=dataset, model='xgboost', strategy='mia', withpattern=FALSE)
     )) %dopar% {
         iter.seed <- iter.seed + 1
         source('functions_boxplots.R')
@@ -99,7 +97,28 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
                    num.threads.ranger=num.threads.ranger)
     }
     # quick and very dirty
-    names(results.list) <- c("xgboost mean + mask", "xgboost gaussian + mask")
+    names(results.list) <- c(
+        "rpart",
+        "rpart + mask",
+        "rpart mean",
+        "rpart mean + mask",
+        "rpart gaussian",
+        "rpart gaussian + mask"
+        "rpart mia"
+        "ctree",
+        "ctree + mask",
+        "ranger mean",
+        "ranger mean + mask",
+        "ranger gaussian",
+        "ranger gaussian + mask"
+        "ranger mia"
+        "xgboost",
+        "xgboost mean",
+        "xgboost mean + mask",
+        "xgboost gaussian",
+        "xgboost gaussian + mask"
+        "xgboost mia"
+        )
     return(results.list)
 }
 
@@ -110,12 +129,6 @@ if (boxplot_choice == 1 | boxplot_choice == -1) {
         scores_mcar <- modifyList(scores_mcar, res)
     } else scores_mcar <- Parallel("make_data1", n_features=3)
     save(scores_mcar, file="results/boxplot_MCAR.RData")
-
-    #if (file.exists("results/boxplot_MAR.RData")) {
-    #    load("results/boxplot_MAR.RData")
-    #    scores_mar <- modifyList(scores_mar, Parallel("make_data2", n_features=3))
-    #} else scores_mar <- Parallel("make_data2", n_features=3)
-    #save(scores_mar, file="results/boxplot_MAR.RData")
 
     if (file.exists("results/boxplot_MNAR.RData")) {
         load("results/boxplot_MNAR.RData")
