@@ -4,25 +4,22 @@ load("results/boxplot_PRED.RData")
 # these are of lists of matrices of shape n_rep*length(sizes)
 
 names(scores_mcar) <- c(
-    "7. rpart (surrogates)", "6. rpart (surrogates) + mask", "3. impute mean", "2. impute mean + mask",
-    "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
+    "7. rpart (surrogates)", "6. rpart (surrogates) + mask", 
+    "3. impute mean", "2. impute mean + mask",
+    "5. impute Gaussian", "4. impute Gaussian + mask", 
+    "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)",
-    "1. block (forest)", "1.block", "1. block (xgboost)",
-    "3. impute mean (xgboost)",
-    "5. impute Gaussian (xgboost)", "0. MIA (xgboost)"
-    ,"2. impute mean + mask (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", 
+    "0. MIA (forest)",
+    "1. block (xgboost)",
+    "3. impute mean (xgboost)", "2. impute mean + mask (xgboost)", 
+    "5. impute Gaussian (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    "0. MIA (xgboost)"
     )
 names(scores_mnar) <- names(scores_mcar)
 names(scores_pred <- names(scores_mcar)
      
-# remove block / block forest
-scores_mcar <- scores_mcar[-c(15, 16)]
-scores_mnar <- scores_mnar[-c(15, 16)]
-scores_pred <- scores_pred[-c(15, 16)]
-
-
 dir.create(file.path('../figures'), showWarnings=FALSE)
 
 library(ggplot2)

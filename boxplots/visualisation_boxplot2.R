@@ -4,24 +4,21 @@ load("results/boxplot2_3.RData")
 # these are of lists of matrices of shape n_rep*length(sizes)
 
 names(scores_21) <- c(
-    "7. rpart (surrogates)", "6. rpart (surrogates) + mask", "3. impute mean", "2. impute mean + mask",
-    "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
+    "7. rpart (surrogates)", "6. rpart (surrogates) + mask", 
+    "3. impute mean", "2. impute mean + mask",
+    "5. impute Gaussian", "4. impute Gaussian + mask", 
+    "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)",
-    "1. block", "1.block (forest)", "1. block (xgboost)",
-    "3. impute mean (xgboost)",
-    "5. impute Gaussian (xgboost)", "0. MIA (xgboost)"
-    ,"2. impute mean + mask (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", 
+    "0. MIA (forest)",
+    "1. block (xgboost)",
+    "3. impute mean (xgboost)", "2. impute mean + mask (xgboost)", 
+    "5. impute Gaussian (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    "0. MIA (xgboost)"
     )
 names(scores_22) <- names(scores_21)
 names(scores_23) <- names(scores_21)
-
-# remove block / block forest
-scores_21 <- scores_21[-c(15, 16)]
-scores_22 <- scores_22[-c(15, 16)]
-scores_23 <- scores_23[-c(15, 16)]
-
 
 dir.create(file.path('../figures'), showWarnings=FALSE)
 
