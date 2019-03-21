@@ -23,5 +23,5 @@ plt.plot(p, argminfp)
 plt.xlabel(r"$p$")
 plt.ylabel(r"$s^\star_{MIA}(p)$")
 plt.tight_layout()
-plt.savefig("../figures/threshold.png")
+plt.savefig("../figures/threshold.pdf")
 
