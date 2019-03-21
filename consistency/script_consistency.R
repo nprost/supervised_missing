@@ -27,9 +27,9 @@ dir.create(file.path('results'), showWarnings=FALSE)
 cat("This script runs consistency results for
     * three datasets: 1. linear, 2. gaussian Friedman, 3. nongaussian Friedman
     * one mechanism: MCAR
-    * three models: rpart, ctree, ranger (RF)
-    * several methods: surrogates (not RF) (+ mask), gaussian imputation (+ mask),
-    mean imputation (+ mask), MIA
+    * four models: rpart, ctree, ranger (RF), xgboost
+    * several methods: surrogates (rpart and ctree) (+ mask), gaussian imputation (+ mask),
+    mean imputation (+ mask), MIA, block propagation (xgboost)
     ")
 cat("Starting R script\n")
 
@@ -48,70 +48,66 @@ registerDoSNOW(cl)
 iter.seed <- 15
 
 foreach (param = list(
-    #list(dataset="make_data1", model='rpart', strategy='none', withpattern=FALSE)
-    
-    #list(dataset="make_data1", model='rpart', strategy='none', withpattern=TRUE)
-    #,
-    #list(dataset="make_data1", model='rpart', strategy='mean', withpattern=FALSE)
-    #,
-    #list(dataset="make_data1", model='rpart', strategy='mean', withpattern=TRUE)
-    #,
-    #list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=FALSE)
-    #,
-    #list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=TRUE)
-    #,
-    #list(dataset="make_data1", model='rpart', strategy='mia', withpattern=FALSE)
-    #,
-    #list(dataset="make_data1", model='ctree', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data1", model='xgboost_onetree', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data1", model='ranger', strategy='mean', withpattern=FALSE)
-    #,
-    #list(dataset="make_data1", model='ranger', strategy='mean', withpattern=TRUE)
-    #,
-    #list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=FALSE)
-    #,
-    #list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=TRUE)
-    #,
-    #list(dataset="make_data1", model='ranger', strategy='mia', withpattern=FALSE)
-    #,
-    list(dataset="make_data1", model='xgboost', strategy='none', withpattern=FALSE)
+    list(dataset="make_data1", model='rpart', strategy='none', withpattern=FALSE)
     ,
+    list(dataset="make_data1", model='rpart', strategy='none', withpattern=TRUE)
+    ,
+    list(dataset="make_data1", model='rpart', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='rpart', strategy='mean', withpattern=TRUE)
+    ,
+    list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='rpart', strategy='gaussian', withpattern=TRUE)
+    ,
+    list(dataset="make_data1", model='rpart', strategy='mia', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='ctree', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='ranger', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='ranger', strategy='mean', withpattern=TRUE)
+    ,
+    list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='ranger', strategy='gaussian', withpattern=TRUE)
+    ,
+    list(dataset="make_data1", model='ranger', strategy='mia', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='xgboost', strategy='none', withpattern=FALSE)
+    , 
     list(dataset="make_data1", model='xgboost', strategy='mean', withpattern=FALSE)
     ,
     list(dataset="make_data1", model='xgboost', strategy='gaussian', withpattern=FALSE)
     ,
     list(dataset="make_data1", model='xgboost', strategy='mia', withpattern=FALSE)
     ,
-    #list(dataset="make_data2", model='rpart', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='rpart', strategy='none', withpattern=TRUE)
-    #,
-    #list(dataset="make_data2", model='rpart', strategy='mean', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='rpart', strategy='mean', withpattern=TRUE)
-    #,
-    #list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=TRUE)
-    #,
-    #list(dataset="make_data2", model='rpart', strategy='mia', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='ctree', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='xgboost_onetree', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='ranger', strategy='mean', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='ranger', strategy='mean', withpattern=TRUE)
-    #,
-    #list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=FALSE)
-    #,
-    #list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=TRUE)
-    #,
-    #list(dataset="make_data2", model='ranger', strategy='mia', withpattern=FALSE)
-    #,
+    list(dataset="make_data2", model='rpart', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='rpart', strategy='none', withpattern=TRUE)
+    ,
+    list(dataset="make_data2", model='rpart', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='rpart', strategy='mean', withpattern=TRUE)
+    ,
+    list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='rpart', strategy='gaussian', withpattern=TRUE)
+    ,
+    list(dataset="make_data2", model='rpart', strategy='mia', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='ctree', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='ranger', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='ranger', strategy='mean', withpattern=TRUE)
+    ,
+    list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='ranger', strategy='gaussian', withpattern=TRUE)
+    ,
+    list(dataset="make_data2", model='ranger', strategy='mia', withpattern=FALSE)
+    ,
     list(dataset="make_data2", model='xgboost', strategy='none', withpattern=FALSE)
     ,
     list(dataset="make_data2", model='xgboost', strategy='mean', withpattern=FALSE)
@@ -120,34 +116,32 @@ foreach (param = list(
     ,
     list(dataset="make_data2", model='xgboost', strategy='mia', withpattern=FALSE)
     ,
-    #list(dataset="make_data3", model='rpart', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='rpart', strategy='none', withpattern=TRUE)
-    #,
-    #list(dataset="make_data3", model='rpart', strategy='mean', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='rpart', strategy='mean', withpattern=TRUE)
-    #,
-    #list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=TRUE)
-    #,
-    #list(dataset="make_data3", model='rpart', strategy='mia', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='ctree', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='xgboost_onetree', strategy='none', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='ranger', strategy='mean', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='ranger', strategy='mean', withpattern=TRUE)
-    #,
-    #list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=FALSE)
-    #,
-    #list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=TRUE)
-    #,
-    #list(dataset="make_data3", model='ranger', strategy='mia', withpattern=FALSE)
-    #,
+    list(dataset="make_data3", model='rpart', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='rpart', strategy='none', withpattern=TRUE)
+    ,
+    list(dataset="make_data3", model='rpart', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='rpart', strategy='mean', withpattern=TRUE)
+    ,
+    list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='rpart', strategy='gaussian', withpattern=TRUE)
+    ,
+    list(dataset="make_data3", model='rpart', strategy='mia', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='ctree', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='ranger', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='ranger', strategy='mean', withpattern=TRUE)
+    ,
+    list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='ranger', strategy='gaussian', withpattern=TRUE)
+    ,
+    list(dataset="make_data3", model='ranger', strategy='mia', withpattern=FALSE)
+    ,
     list(dataset="make_data3", model='xgboost', strategy='none', withpattern=FALSE)
     ,
     list(dataset="make_data3", model='xgboost', strategy='mean', withpattern=FALSE)

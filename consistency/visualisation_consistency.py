@@ -21,14 +21,9 @@ for i in range(3):
     dataset="make_data{}".format(i+1)
     for method in [
         {'model': 'rpart', 'strategy': 'none', 'withpattern': "FALSE"},
-        #{'model': 'rpart', 'strategy': 'none', 'withpattern': "TRUE"},
         {'model': 'rpart', 'strategy': 'mean', 'withpattern': "FALSE"},
-        #{'model': 'rpart', 'strategy': 'mean', 'withpattern': "TRUE"},
         {'model': 'rpart', 'strategy': 'gaussian', 'withpattern': "FALSE"},
-        #{'model': 'rpart', 'strategy': 'gaussian', 'withpattern': "TRUE"},
         {'model': 'rpart', 'strategy': 'mia', 'withpattern': "FALSE"},
-        #{'model': 'ctree', 'strategy': 'none', 'withpattern': "FALSE"},
-        #{'model': 'xgboost_onetree', 'strategy': 'none', 'withpattern': "FALSE"},
         ]:
         model, strategy, withpattern = tuple(method.values())
 
@@ -54,11 +49,8 @@ for i in range(3):
     dataset="make_data{}".format(i+1)
     for method in [
         {'model': 'ranger', 'strategy': 'mean', 'withpattern': "FALSE"},
-        #{'model': 'ranger', 'strategy': 'mean', 'withpattern': "TRUE"},
         {'model': 'ranger', 'strategy': 'gaussian', 'withpattern': "FALSE"},
-        #{'model': 'ranger', 'strategy': 'gaussian', 'withpattern': "TRUE"},
         {'model': 'ranger', 'strategy': 'mia', 'withpattern': "FALSE"},
-        #{'model': 'xgboost', 'strategy': 'none', 'withpattern': "FALSE"},
         ]:
         model, strategy, withpattern = tuple(method.values())
 
@@ -115,8 +107,6 @@ scores_expvar = [{key: 1 - scr/VARY[datanum]
     for key, scr in score.items()} for datanum, score in enumerate(scores_raw)]
 
 # sufficient statistics
-#scores = [{key: (np.mean(val, 0), np.mean(val, 0)-np.std(val, 0), np.mean(val, 0)+np.std(val, 0)) 
-#    for key, val in score.items()} for score in scores_expvar]
 scores = [{key: (np.percentile(val, 50, 0), np.percentile(val, 25, 0), np.percentile(val, 75, 0)) 
     for key, val in score.items()} for score in scores_expvar]
 
@@ -140,26 +130,20 @@ fig, ax = plt.subplots(3, 3, figsize=(10, 10))
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 colors_dict = {
     'Surrogates (rpart)': colors[0],
-    #'rpart (surrogates) + mask': colors[0],
-    #'ctree (surrogates)': colors[6],
-    #'ctree (surrogates) + mask': colors[6],
     'Mean imputation': colors[1],
-    #'Mean imputation + mask': colors[1],
     'Block (XGBoost) - xgboost': colors[5],
-    #'Block (XGBoost) - forest': colors[5],
     'MIA': colors[2],
     'MIA - forest': colors[2],
     'MIA - xgboost': colors[2],
     'Gaussian imputation': colors[3],
-    #'Gaussian imputation + mask': colors[3],
     'Mean imputation - forest': colors[1],
     'Mean imputation - xgboost': colors[1],
-    #'Mean imputation + mask - forest': colors[1],
     'Gaussian imputation - forest': colors[3],
     'Gaussian imputation - xgboost': colors[3],
-    #'Gaussian imputation + mask - forest': colors[3],
     'Bayes rate': colors[4],
 }
+###############################################################################
+# There are 3 x 3 plots: trees, forests, boosting for models 1, 2, 3
 ###############################################################################
 for name, scr in scores[0].items():
     means = np.array(scr[0])
@@ -297,7 +281,6 @@ for name, scr in scores[6].items():
 ax[2,0].set_xlabel("Sample size")
 ax[2,0].set_ylabel("Explained variance")
 ax[2,0].set_ylim(
-#    0.5, 0.85
     np.array([s[0] for _, s in scores[6].items()]).min()-0.01,
     np.array([s[0] for _, s in scores[6].items()]).max()+0.01
 )
@@ -317,7 +300,6 @@ for name, scr in scores[7].items():
 ax[2,1].set_xlabel("Sample size")
 ax[2,1].set_ylabel("Explained variance")
 ax[2,1].set_ylim(
-#    0.35, 0.8
     np.array([s[0] for _, s in scores[7].items()]).min()-0.015,
     np.array([s[0] for _, s in scores[7].items()]).max()+0.015
 )
@@ -347,6 +329,5 @@ ax[2,2].grid()
 fig.legend(loc=(0.17, 0.01), ncol=3, frameon=False)
 plt.tight_layout()
 fig.subplots_adjust(bottom=0.13, top=0.9, right=0.95)
-#plt.show()
 fig.savefig('../figures/consistency_log_merge.pdf')
 plt.close(fig)  
