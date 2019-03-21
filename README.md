@@ -20,7 +20,7 @@ To run *script_boxplot.R* (or *script_consistency.R*) with 20 jobs to paralleliz
 Rscript script_boxplots.R 20 10
 ```
 
-All figure outputs go to the directory **figures** (created when inexistent).
+All figure outputs go to the directory **figures** (created when nonexistent).
 
 Nicolas Prost
 
