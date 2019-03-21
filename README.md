@@ -14,6 +14,12 @@ The directory **analysis** contains the code for figures 1 and 2 (section 5).
 
 For scripts: give between 0 and 2 arguments to Rscript (e.g. "~$ Rscript script_consistency.R 5 10"): the first one is the number of jobs to parallelize the "for" loop, the second is the number of cores for each ranger forest.
 
+To run *script_boxplot.R* (or *script_consistency.R*) with 20 jobs to parallelize the "for" loop and 10 threads per forest/boosting, do
+
+```bash
+Rscript script_boxplots.R 20 10
+```
+
 All figure outputs go to the directory **figures** (created when inexistent).
 
 Nicolas Prost
