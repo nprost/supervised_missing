@@ -16,7 +16,7 @@ To run *script_boxplots.R* or *script_consistency.R* with, say, 20 jobs to paral
 
 ```bash
 Rscript boxplots/script_boxplots.R 20 10
-Rscript consistency/script_consistency.R
+Rscript consistency/script_consistency.R 20 10
 ```
 
 To build the figures, just run the scripts,
