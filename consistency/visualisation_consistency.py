@@ -12,6 +12,23 @@ if not os.path.exists("../figures"): os.mkdir("../figures")
 ###############################################################################
 # GET CORRECT VECTOR FOR PLOTTING
 
+
+def method_name_func(model, strategy, withpattern):
+    method_name = ""
+    if strategy == "mia": method_name = "MIA"
+    elif strategy == "mean": method_name = "Mean imputation"
+    elif strategy == "gaussian": method_name = "Gaussian imputation"
+    elif strategy == "none":
+        if model == "rpart": method_name = "Surrogates (rpart)"
+        elif model == "ctree": method_name = "ctree (surrogates)"
+        elif model == "xgboost": method_name = "Block (XGBoost)"
+    if withpattern == "TRUE": method_name += " + mask"
+    if model == "ranger": method_name += " - forest"
+    if model == "xgboost": method_name += " - xgboost"
+    return method_name
+
+
+# remove the three first values: too small sample sizes
 sizes = np.logspace(2, 5, 20).astype('int64')[3:]
 
 scores_raw = []
@@ -30,16 +47,7 @@ for i in range(3):
         csvfile = "results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
         if os.path.exists(csvfile): 
             scores_method = pd.read_csv(csvfile, sep=" ")
-            method_name = ""
-            if strategy == "mia": method_name = "MIA"
-            elif strategy == "mean": method_name = "Mean imputation"
-            elif strategy == "gaussian": method_name = "Gaussian imputation"
-            elif strategy == "none":
-                if model == "rpart": method_name = "Surrogates (rpart)"
-                elif model == "ctree": method_name = "ctree (surrogates)"
-                elif model == "xgboost_onetree": method_name = "Block (XGBoost)"
-            if withpattern == "TRUE": method_name += " + mask"
-    
+            method_name = method_name_func(model, strategy, withpattern)
             scorerawi[method_name] = np.array(scores_method)[:,3:]
     scores_raw.append(scorerawi)
     
@@ -57,17 +65,7 @@ for i in range(3):
         csvfile = "results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
         if os.path.exists(csvfile): 
             scores_method = pd.read_csv(csvfile, sep=" ")
-            method_name = ""
-            if strategy == "mia": method_name = "MIA"
-            elif strategy == "mean": method_name = "Mean imputation"
-            elif strategy == "gaussian": method_name = "Gaussian imputation"
-            elif strategy == "none":
-                if model == "rpart": method_name = "Surrogates (rpart)"
-                elif model == "ctree": method_name = "ctree (surrogates)"
-                elif model == "xgboost_onetree": method_name = "Block (XGBoost)"
-            if withpattern == "TRUE": method_name += " + mask"
-            
-            method_name += " - forest"
+            method_name = method_name_func(model, strategy, withpattern)
             scorerawi[method_name] = np.array(scores_method)[:,3:]
     scores_raw.append(scorerawi)
 
@@ -86,17 +84,7 @@ for i in range(3):
         csvfile = "results/{}_{}_{}_{}.csv".format(dataset, model, strategy, withpattern)
         if os.path.exists(csvfile): 
             scores_method = pd.read_csv(csvfile, sep=" ")
-            method_name = ""
-            if strategy == "mia": method_name = "MIA"
-            elif strategy == "mean": method_name = "Mean imputation"
-            elif strategy == "gaussian": method_name = "Gaussian imputation"
-            elif strategy == "none":
-                if model == "rpart": method_name = "Surrogates (rpart)"
-                elif model == "ctree": method_name = "ctree (surrogates)"
-                elif model == "xgboost": method_name = "Block (XGBoost)"
-            if withpattern == "TRUE": method_name += " + mask"
-            
-            method_name += " - xgboost"    
+            method_name = method_name_func(model, strategy, withpattern)
             scorerawi[method_name] = np.array(scores_method)[:,3:]
     scores_raw.append(scorerawi)
 
