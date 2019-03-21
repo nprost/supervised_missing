@@ -1,6 +1,6 @@
 # On the consistency of supervised learning with missing values
 
-**Authors: Julie Josse (CMAP), Nicolas Prost (CMAP, Inria), Erwan Scornet (CMAP), Gaël Varoquaux (Inria).**
+**Authors: Julie Josse (CMAP, Inria), Nicolas Prost (CMAP, Inria), Erwan Scornet (CMAP), Gaël Varoquaux (Inria).**
 
 This repository contains the code for the paper:
 
