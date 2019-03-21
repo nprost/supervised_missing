@@ -1,4 +1,4 @@
-load("results/boxplot2_1_test.RData")
+load("results/boxplot2_1.RData")
 load("results/boxplot2_2.RData")
 load("results/boxplot2_3.RData")
 # these are of lists of matrices of shape n_rep*length(sizes)
@@ -8,28 +8,48 @@ names(scores_21) <- c(
     "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)", 
-    "1. block", "1. block (forest)")
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)",
+    "1. block", "1.block (forest)", "1. block (xgboost)",
+    "3. impute mean (xgboost)",
+    "5. impute Gaussian (xgboost)", "0. MIA (xgboost)"
+    ,"2. impute mean + mask (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    )
 names(scores_22) <- c(
     "7. rpart (surrogates)", "6. rpart (surrogates) + mask", "3. impute mean", "2. impute mean + mask",
     "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)", 
-    "1. block", "1. block (forest)")
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)",
+    "1. block", "1.block (forest)", "1. block (xgboost)",
+    "3. impute mean (xgboost)",
+    "5. impute Gaussian (xgboost)", "0. MIA (xgboost)"
+    ,"2. impute mean + mask (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    )
 names(scores_23) <- c(
     "7. rpart (surrogates)", "6. rpart (surrogates) + mask", "3. impute mean", "2. impute mean + mask",
     "5. impute Gaussian", "4. impute Gaussian + mask", "0. MIA",
     "9. ctree (surrogates)", "8. ctree (surrogates) + mask",
     "3. impute mean (forest)", "2. impute mean + mask (forest)",
-    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)", 
-    "1. block", "1. block (forest)")
+    "5. impute Gaussian (forest)", "4. impute Gaussian + mask (forest)", "0. MIA (forest)",
+    "1. block", "1.block (forest)", "1. block (xgboost)",
+    "3. impute mean (xgboost)",
+    "5. impute Gaussian (xgboost)", "0. MIA (xgboost)"
+    ,"2. impute mean + mask (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    )
+
+
+# remove block / block forest
+scores_21 <- scores_21[-c(15, 16)]
+scores_22 <- scores_22[-c(15, 16)]
+scores_23 <- scores_23[-c(15, 16)]
+
 
 dir.create(file.path('../figures'), showWarnings=FALSE)
 
 library(ggplot2)
 library(gridExtra)
 library(viridis)
+library(grid)
 
 # mse to explained variance
 VARY1 <- 25.4
@@ -39,23 +59,36 @@ scores_22 <- lapply(scores_22, function(x) 1-x/VARY2)
 VARY3 <- 10820
 scores_23 <- lapply(scores_23, function(x) 1-x/VARY3)
 
-# relative
-scores_21 <- lapply(scores_21, function(x) x-Reduce("+", scores_21) / length(scores_21))
-scores_22 <- lapply(scores_22, function(x) x-Reduce("+", scores_22) / length(scores_22))
-scores_23 <- lapply(scores_23, function(x) x-Reduce("+", scores_23) / length(scores_23))
+cols <- c('#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
+          '#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf')
 
-pdf('../figures/boxplot_linearlinear_test.pdf', width=9.5, height=13)
+# relative
+scores_21[1:9] <- lapply(scores_21[1:9], function(x) x-Reduce("+", scores_21[1:9]) / length(scores_21[1:9]))
+scores_21[10:14] <- lapply(scores_21[10:14], function(x) x-Reduce("+", scores_21[10:14]) / length(scores_21[10:14]))
+scores_21[15:20] <- lapply(scores_21[15:20], function(x) x-Reduce("+", scores_21[15:20]) / length(scores_21[15:20]))
+#scores_mar <- lapply(scores_mar, function(x) x-Reduce("+", scores_mar) / length(scores_mar))
+scores_22[1:9] <- lapply(scores_22[1:9], function(x) x-Reduce("+", scores_22[1:9]) / length(scores_22[1:9]))
+scores_22[10:14] <- lapply(scores_22[10:14], function(x) x-Reduce("+", scores_22[10:14]) / length(scores_22[10:14]))
+scores_22[15:20] <- lapply(scores_22[15:20], function(x) x-Reduce("+", scores_22[15:20]) / length(scores_22[15:20]))
+scores_23[1:9] <- lapply(scores_23[1:9], function(x) x-Reduce("+", scores_23[1:9]) / length(scores_23[1:9]))
+scores_23[10:14] <- lapply(scores_23[10:14], function(x) x-Reduce("+", scores_23[10:14]) / length(scores_23[10:14]))
+scores_23[15:20] <- lapply(scores_23[15:20], function(x) x-Reduce("+", scores_23[15:20]) / length(scores_22[15:20]))
+
+pdf('../figures/boxplot_linearlinear.pdf', width=9.5, height=13)
 aa <- cbind.data.frame(unlist(scores_21), rep(names(scores_21), each = 500))
 colnames(aa) <- c("score", "method")
-aa$forest <- as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
+aa$forest <- as.factor(ifelse(grepl("xgboost", aa$method), "XGBOOST", ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE")))
 aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
+aa$method <- as.factor(sub("\\ \\(xgboost\\)", "", aa$method))
 aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
 
-ggplot(data=aa, aes(method, score)) +
+g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    geom_boxplot(outlier.alpha = 0.5, fill = viridis(16)) +
-    scale_y_continuous(breaks=c(-0.1, -0.05, 0, 0.05, 0.1),
-                       labels=c("-0,1", "-0,05", "0,0", "+0.05", "+0,1")) +
+    #geom_boxplot(outlier.alpha = 0.5, fill = viridis(20)) +
+    geom_boxplot(outlier.alpha = 0.5, fill = c(cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],cols[3],cols[2],cols[2],cols[4],cols[4],cols[3],cols[6],cols[2],cols[2],cols[4],cols[4])) +
+    #scale_y_continuous(breaks=c(-0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1),
+    #                   labels=c("-0,2", "-0,15", "-0,1", "-0,05", "0,0", "+0.05", "+0,1")) +
+    scale_y_continuous(labels=function(x) paste0(symnum(x, c(-Inf, 0, Inf), c("", "+")), x)) +
     theme(axis.text.x = element_text(face="bold", size=22),
           axis.text.y = element_text(face="bold", size=20, angle=15),
           axis.title.x = element_text(face="bold", size=22),
@@ -69,20 +102,28 @@ ggplot(data=aa, aes(method, score)) +
           strip.text.x = element_text(size=22)) +
     labs(title = "", x  = "", y = "Relative explained variance") +
     coord_flip() +
-    facet_wrap(~forest, nrow=2, scales="free_y")
+    facet_wrap(~forest, nrow=3, scales="free")
+gt <- ggplot_gtable(ggplot_build(g))
+i=13; gt$heights[i] = 5/9 * gt$heights[i]
+gt$heights[18] = 6/9 * gt$heights[18]
+grid.draw(gt)
 dev.off()
 
 pdf('../figures/boxplot_linearnonlinear.pdf', height=13)
 aa <- cbind.data.frame(unlist(scores_22), rep(names(scores_22), each = 500))
 colnames(aa) <- c("score", "method")
-aa$forest <- as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
+aa$forest <- as.factor(ifelse(grepl("xgboost", aa$method), "XGBOOST", ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE")))
 aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
+aa$method <- as.factor(sub("\\ \\(xgboost\\)", "", aa$method))
 aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
-ggplot(data=aa, aes(method, score)) +
+g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    geom_boxplot(outlier.alpha = 0.5, fill = viridis(16)) +
-    scale_y_continuous(breaks=c(-0.4, -0.2, 0, 0.2, 0.4),
-                       labels=c("-0,4", "-0,2", "0,0", "+0.2", "+0,4")) +
+    #geom_boxplot(outlier.alpha = 0.5, fill = viridis(20)) +
+    geom_boxplot(outlier.alpha = 0.5, fill = c(cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],cols[3],cols[2],cols[2],cols[4],cols[4],cols[3],cols[6],cols[2],cols[2],cols[4],cols[4])) +
+    #scale_y_continuous(breaks=c(-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4),
+    #                   labels=c("-0,8", "-0,6", "-0,4", "-0,2", "0,0", "+0.2", "+0,4"),
+    #                   ) +
+    scale_y_continuous(labels=function(x) paste0(symnum(x, c(-Inf, 0, Inf), c("", "+")), x)) +
     theme(axis.text.x = element_text(face="bold", size=22),
           axis.text.y = element_blank(),
           axis.title.x = element_text(face="bold", size=22),
@@ -96,20 +137,28 @@ ggplot(data=aa, aes(method, score)) +
           strip.text.x = element_text(size=22)) +
     labs(title = "", x  = "", y = "Relative explained variance") +
     coord_flip() +
-    facet_wrap(~forest, nrow=2, scales = "free_y")
+    facet_wrap(~forest, nrow=3, scales = "free")
+gt <- ggplot_gtable(ggplot_build(g))
+i=13; gt$heights[i] = 5/9 * gt$heights[i]
+gt$heights[18] = 6/9 * gt$heights[18]
+grid.draw(gt)
 dev.off()
 
 pdf('../figures/boxplot_nonlinearnonlinear.pdf', height=13)
 aa <- cbind.data.frame(unlist(scores_23), rep(names(scores_23), each = 500))
 colnames(aa) <- c("score", "method")
-aa$forest <- as.factor(ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE"))
+aa$forest <- as.factor(ifelse(grepl("xgboost", aa$method), "XGBOOST", ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE")))
 aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
+aa$method <- as.factor(sub("\\ \\(xgboost\\)", "", aa$method))
 aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
-ggplot(data=aa, aes(method, score)) +
+g <- ggplot(data=aa, aes(method, score)) +
     geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
-    geom_boxplot(outlier.alpha = 0.5, fill = viridis(16)) +
-    scale_y_continuous(breaks=c(-0.002, -0.001, 0, 0.001, 0.002),
-                       labels=c("-0,002", "-0,001", "0,0", "+0,001", "+0,002")) +
+    #geom_boxplot(outlier.alpha = 0.5, fill = viridis(20)) +
+    geom_boxplot(outlier.alpha = 0.5, fill = c(cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],cols[3],cols[2],cols[2],cols[4],cols[4],cols[3],cols[6],cols[2],cols[2],cols[4],cols[4])) +
+    #scale_y_continuous(breaks=c(-0.03, -0.02, -0.01, 0, 0.01, 0.02),
+    #                   labels=c("-0,03", "-0,02", "-0,01", "0,0", "+0,01", "+0,02"),
+    #                   ) +
+    scale_y_continuous(labels=function(x) paste0(symnum(x, c(-Inf, 0, Inf), c("", "+")), x)) +
     theme(axis.text.x = element_text(face="bold", size=22),
           axis.text.y = element_blank(),
           axis.title.x = element_text(face="bold", size=22),
@@ -123,7 +172,11 @@ ggplot(data=aa, aes(method, score)) +
           strip.text.x = element_text(size=22)) +
     labs(title = "", x  = "", y = "Relative explained variance") +
     coord_flip() +
-    facet_wrap(~forest, nrow=2, scales = "free_y")
+    facet_wrap(~forest, nrow=3, scales = "free")
+gt <- ggplot_gtable(ggplot_build(g))
+i=13; gt$heights[i] = 5/9 * gt$heights[i]
+gt$heights[18] = 6/9 * gt$heights[18]
+grid.draw(gt)
 dev.off()
 
 

@@ -64,8 +64,8 @@ foreach (param = list(
     #,
     #list(dataset="make_data1", model='ctree', strategy='none', withpattern=FALSE)
     #,
-    list(dataset="make_data1", model='xgboost_onetree', strategy='none', withpattern=FALSE)
-    ,
+    #list(dataset="make_data1", model='xgboost_onetree', strategy='none', withpattern=FALSE)
+    #,
     #list(dataset="make_data1", model='ranger', strategy='mean', withpattern=FALSE)
     #,
     #list(dataset="make_data1", model='ranger', strategy='mean', withpattern=TRUE)
@@ -77,6 +77,12 @@ foreach (param = list(
     #list(dataset="make_data1", model='ranger', strategy='mia', withpattern=FALSE)
     #,
     list(dataset="make_data1", model='xgboost', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='xgboost', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='xgboost', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data1", model='xgboost', strategy='mia', withpattern=FALSE)
     ,
     #list(dataset="make_data2", model='rpart', strategy='none', withpattern=FALSE)
     #,
@@ -94,8 +100,8 @@ foreach (param = list(
     #,
     #list(dataset="make_data2", model='ctree', strategy='none', withpattern=FALSE)
     #,
-    list(dataset="make_data2", model='xgboost_onetree', strategy='none', withpattern=FALSE)
-    ,
+    #list(dataset="make_data2", model='xgboost_onetree', strategy='none', withpattern=FALSE)
+    #,
     #list(dataset="make_data2", model='ranger', strategy='mean', withpattern=FALSE)
     #,
     #list(dataset="make_data2", model='ranger', strategy='mean', withpattern=TRUE)
@@ -107,6 +113,12 @@ foreach (param = list(
     #list(dataset="make_data2", model='ranger', strategy='mia', withpattern=FALSE)
     #,
     list(dataset="make_data2", model='xgboost', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='xgboost', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='xgboost', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data2", model='xgboost', strategy='mia', withpattern=FALSE)
     ,
     #list(dataset="make_data3", model='rpart', strategy='none', withpattern=FALSE)
     #,
@@ -124,8 +136,8 @@ foreach (param = list(
     #,
     #list(dataset="make_data3", model='ctree', strategy='none', withpattern=FALSE)
     #,
-    list(dataset="make_data3", model='xgboost_onetree', strategy='none', withpattern=FALSE)
-    ,
+    #list(dataset="make_data3", model='xgboost_onetree', strategy='none', withpattern=FALSE)
+    #,
     #list(dataset="make_data3", model='ranger', strategy='mean', withpattern=FALSE)
     #,
     #list(dataset="make_data3", model='ranger', strategy='mean', withpattern=TRUE)
@@ -137,6 +149,12 @@ foreach (param = list(
     #list(dataset="make_data3", model='ranger', strategy='mia', withpattern=FALSE)
     #,
     list(dataset="make_data3", model='xgboost', strategy='none', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='xgboost', strategy='mean', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='xgboost', strategy='gaussian', withpattern=FALSE)
+    ,
+    list(dataset="make_data3", model='xgboost', strategy='mia', withpattern=FALSE)
 )) %dopar% {
     iter.seed <- iter.seed + 1
     source('functions_consistency.R')

@@ -216,7 +216,7 @@ preprocess <- function(df, strategy, withpattern, parameters) {
     if (withpattern==TRUE) {
         indicators.factor <- data.frame(apply(indicators, 2, as.factor))
         indicators.addfactor <- data.frame(lapply(indicators.factor,
-            function(col) factor(col, levels=c("FALSE", "TRUE"))))
+            function(col) as.numeric(factor(col, levels=c("FALSE", "TRUE")))))
         indsansNA <- which((sapply(indicators.factor, nlevels)) == 1)
         X.imput <- cbind.data.frame(X.imput, indicators.addfactor[, -indsansNA])
     }
@@ -291,23 +291,34 @@ run_scores <- function(model, strategy, withpattern, dataset,
                     minbucket=min_samples_leaf, mincriterion=0.0))
                 res <- predict(reg, as.matrix(subset(test, select=-c(y))))
             } else if (model == "xgboost_onetree") {
+                sink('sink')
                 reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)
                     ,nrounds=1 ,eta=1 ,max.depth=100 ,num_parallel_tree=1, min_samples_leaf=30
-                    ,verbosity=0 ,subsample=1 ,colsample_bytree=1 ,nthread=num.threads.ranger
+                    ,verbose_eval=F ,subsample=1 ,colsample_bytree=1 ,nthread=num.threads.ranger
                     )
                 res <- predict(reg, as.matrix(subset(test, select=-c(y))))
+                sink()
             } else if (model == "ranger") {
                 reg <- ranger(y~., data=train, num.threads=num.threads.ranger, verbose=F)
                 res <- predict(reg, subset(test, select=-c(y)))$predictions
             } else if (model == "cforest") {
                 reg <- cforest(y~., data=train)
                 res <- predict(reg, subset(test, select=-c(y)))
-            } else if (model == "xgboost") {
+            } else if (model == "xgboost_rf") {
+                sink('sink')
                 reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)
-                    ,nrounds=1 ,eta=1 ,max.depth=100 ,num_parallel_tree=500, min_samples_leaf=30
-                    ,verbosity=0 ,subsample=0.632 ,colsample_bytree=1 ,nthread=num.threads.ranger
+                    ,nrounds=1 ,eta=1 ,max.depth=100 ,num_parallel_tree=500, min_samples_leaf=1
+                    ,verbose_eval=F ,subsample=0.632 ,colsample_bytree=1 ,nthread=num.threads.ranger
                     )
                 res <- predict(reg, as.matrix(subset(test, select=-c(y))))
+                sink()
+            } else if (model == "xgboost") {
+                sink('sink')
+                reg <- xgboost(data=as.matrix(subset(train, select=-c(y))) ,label=as.matrix(train$y)
+                    ,nrounds=500 ,nthread=num.threads.ranger
+                    )
+                res <- predict(reg, as.matrix(subset(test, select=-c(y))))
+                sink()
             } else stop("Invalid model")
 
             result[k, iter.size] = mean((test$y - res)**2)
