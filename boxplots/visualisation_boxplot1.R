@@ -55,7 +55,9 @@ scores_pred[15:20] <- lapply(scores_pred[15:20], function(x) x-Reduce("+", score
 df_for_ggplot <- function(scores) {
     aa <- cbind.data.frame(unlist(scores), rep(names(scores), each = length(scores[[1]])))
     colnames(aa) <- c("score", "method")
-    aa$forest <- as.factor(ifelse(grepl("xgboost", aa$method), "XGBOOST", ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE")))
+    aa$forest <- as.factor(
+        ifelse(grepl("xgboost", aa$method), "XGBOOST", 
+               ifelse(grepl("forest", aa$method), "RANDOM FOREST", "DECISION TREE")))
     aa$method <- as.factor(sub("\\ \\(forest\\)", "", aa$method))
     aa$method <- as.factor(sub("\\ \\(xgboost\\)", "", aa$method))
     aa$method <- as.factor(sub("\\ \\+\\ mask", "\n\\+\\ mask", aa$method))
