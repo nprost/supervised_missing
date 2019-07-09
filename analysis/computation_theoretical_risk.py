@@ -16,8 +16,8 @@ def critmia(s, p):
 
 def riskmia(p, eta):
     Rp = min(critmia(s, p) for s in np.linspace(0.001, 1, 1000))
-    Reta = min(critmia(s, 1-eta) for s in np.linspace(0.001, 1, 1000))
-    return Rp*(p<=1-eta) + Reta*(p>1-eta)
+    Reta = min(critmia(s, eta) for s in np.linspace(0.001, 1, 1000))
+    return Rp*(p <= eta) + Reta*(p > eta)
 
 def riskblock(p):
     return critmia(1/2, p)
@@ -41,6 +41,7 @@ for count, (ax, eta) in enumerate(zip(axs, [0., 0.25, 0.75])):
     rblock = np.array([riskblock(pi) for pi in p])
     rproba = np.array([riskproba(pi) for pi in p])
 
+    ax.set_xlim((0, 1))
     ax.set_ylim(top=0.12)
     if count == 0:
         ax.plot(p, rproba, label='Probabilistic split')
@@ -54,8 +55,8 @@ for count, (ax, eta) in enumerate(zip(axs, [0., 0.25, 0.75])):
         ax.plot(p, rsurr2, label=None)
     ax.set_xlabel(r"Fraction $p$ of missing values")
     ax.set_ylabel(r"Quadratic risk $R(p)$")
-    ax.set_title(r"$\eta=${}".format(eta))
-fig.legend(loc=(0.35, 0.05), ncol=2, frameon=False)
+    ax.set_title(r"Coupling across variables $\eta=${}".format(eta), fontsize=12)
+fig.legend(loc=(0.15, 0.05), ncol=4, frameon=False)
 plt.tight_layout()
 fig.subplots_adjust(bottom=0.3)
 fig.savefig("../figures/theo_risk2.pdf")
