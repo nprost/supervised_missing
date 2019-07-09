@@ -12,10 +12,31 @@ The directory **analysis** contains the code for figures 1 and 2 (section 5).
 
 **consistency** is used for figure 5 (section 6). There are three files as for the boxplot, but in addition, approximate Bayes rates are computed in *bayesrates.R* with oracle multiple imputation, as detailed in the paper. 
 
-To run *script_boxplots.R* (or *script_consistency.R*) with 20 jobs to parallelize the "for" loop and 10 threads per forest/boosting, do
+The scripts require the following R packages:
+```r
+rpart
+party
+ranger
+xgboost
+MASS
+norm
+doParallel
+doSNOW
+```
+
+To run *script_boxplots.R* or *script_consistency.R* with, say, 20 jobs to parallelize the "for" loop and 10 threads per forest/boosting, do
 
 ```bash
-Rscript script_boxplots.R 20 10
+Rscript boxplots/script_boxplots.R 20 10
+Rscript consistency/script_consistency.R 20 10
+```
+
+To build the figures, just run the scripts,
+
+```bash
+Rscript boxplots/visualisation_boxplot1.R
+Rscript boxplots/visualisation_boxplot2.R
+python consistency/visualisation_consistency.R
 ```
 
 All figure outputs go to the directory **figures** (created when nonexistent).
