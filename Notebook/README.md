@@ -1,6 +1,6 @@
 # Notebook instructions
 
-[![Binder](https://mybinder.org/v2/gh/nprost/supervised_missing/master?filepath=Notebook%2FA%20toy%20regression%20model%20with%20missing%20values.ipynb)
+[![Binder](https://mybinder.org/v2/gh/nprost/supervised_missing/master?filepath=Notebook%2FA%20toy%20regression%20model%20with%20missing%20values.ipynb)]
 
 A Binder-compatible repo with a `requirements.txt` file.
 
