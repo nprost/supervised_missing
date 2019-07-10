@@ -2,6 +2,24 @@
 
 **Authors: Julie Josse (CMAP, Inria), Nicolas Prost (CMAP, Inria), Erwan Scornet (CMAP), Gaël Varoquaux (Inria).**
 
+## Simple example notebook
+
+[![Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nprost/supervised_missing/master?filepath=Notebook%2FA%20toy%20regression%20model%20with%20missing%20values.ipynb)
+
+A Binder-compatible repo with a `requirements.txt` file.
+
+Access this Binder at the following URL 
+
+https://mybinder.org/v2/gh/nprost/supervised_missing/master?filepath=Notebook%2FA%20toy%20regression%20model%20with%20missing%20values.ipynb
+
+## Notes
+Install the required Python libraries via
+```
+pip install -r requirements.txt
+```
+
+## Code for the simulations in the paper
+
 This repository contains the code for the paper:
 
 Julie Josse, Nicolas Prost, Erwan Scornet, Gaël Varoquaux. On the consistency of supervised learning with missing values. 2019. 〈hal-02024202〉https://arxiv.org/abs/1902.06931
@@ -47,18 +65,4 @@ March 21, 2019
 
 **Update**: the directory **Notebook** contains a tutorial on key results of the paper.
 
-# Notebook instructions
 
-[![Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nprost/supervised_missing/master?filepath=Notebook%2FA%20toy%20regression%20model%20with%20missing%20values.ipynb)
-
-A Binder-compatible repo with a `requirements.txt` file.
-
-Access this Binder at the following URL 
-
-https://mybinder.org/v2/gh/nprost/supervised_missing/master?filepath=Notebook%2FA%20toy%20regression%20model%20with%20missing%20values.ipynb
-
-## Notes
-Install the required Python libraries via
-```
-pip install -r requirements.txt
-```
