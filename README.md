@@ -12,7 +12,7 @@ Access this Binder at the following URL
 
 https://mybinder.org/v2/gh/nprost/supervised_missing/master?filepath=Notebook%2FA%20toy%20regression%20model%20with%20missing%20values.ipynb
 
-## Notes
+**Notes**
 Install the required Python libraries via
 ```
 pip install -r requirements.txt
