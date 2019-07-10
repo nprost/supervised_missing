@@ -44,3 +44,5 @@ All figure outputs go to the directory **figures** (created when nonexistent).
 Nicolas Prost
 
 March 21, 2019
+
+**Update**: the directory **Notebook** contains a tutorial on key results of the paper.
