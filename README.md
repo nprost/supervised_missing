@@ -4,7 +4,7 @@
 
 This repository contains the code for the paper:
 
-Julie Josse, Nicolas Prost, Erwan Scornet, Gaël Varoquaux. On the consistency of supervised learning with missing values. 2019. 〈hal-02024202〉
+Julie Josse, Nicolas Prost, Erwan Scornet, Gaël Varoquaux. On the consistency of supervised learning with missing values. 2019. 〈hal-02024202〉https://arxiv.org/abs/1902.06931
 
 The directory **analysis** contains the code for figures 1 and 2 (section 5).
 
