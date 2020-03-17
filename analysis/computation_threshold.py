@@ -4,9 +4,15 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-matplotlib.rcParams.update({'font.size': 16})
 
-if not os.path.exists("../figures"): os.mkdir("../figures")
+matplotlib.rcParams.update({'font.size': 16})
+CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
+                  '#f781bf', '#a65628', '#984ea3',
+                  '#999999', '#e41a1c', '#dede00']
+
+if not os.path.exists("../figures"):
+    os.mkdir("../figures")
+
 
 def critmia(s, p):
     t1 = 1/3
@@ -14,14 +20,24 @@ def critmia(s, p):
     t3 = (1/4) * (1-p)*(1-s)*(1+s)**2
     return t1 - t2 - t3
 
+
 def argmincritmia(p):
-    return min(((s, critmia(s, p)) for s in np.linspace(0, 1, 1001)), key=lambda x: x[1])[0]
+    return min(((s, critmia(s, p)) for s in np.linspace(0, 1, 1001)),
+               key=lambda x: x[1])[0]
 
-p = np.linspace(0.001, 0.999, 999)
-argminfp = np.array([argmincritmia(pi) for pi in p])
-plt.plot(p, argminfp)
-plt.xlabel(r"$p$")
-plt.ylabel(r"$s^\star_{MIA}(p)$")
-plt.tight_layout()
-plt.savefig("../figures/threshold.pdf")
 
+if __name__ == '__main__':
+    plt.clf()
+    p = np.linspace(0.001, 0.999, 999)
+    argminfp = np.array([argmincritmia(pi) for pi in p])
+    plt.plot(p, argminfp,
+             linestyle='--', color=CB_color_cycle[0], label='left')
+    plt.plot(p, np.repeat(0.5, len(p)),
+             linestyle='-', color=CB_color_cycle[1], label='CART')
+    plt.plot(p, 1-argminfp,
+             linestyle='-.', color=CB_color_cycle[2], label='right')
+    plt.xlabel(r"$p$")
+    plt.ylabel(r"$s^\star_{MIA}(p)$")
+    plt.legend(loc='center right', framealpha=1)
+    plt.tight_layout()
+    plt.savefig("../figures/threshold.pdf")
