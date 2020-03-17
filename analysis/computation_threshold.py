@@ -28,14 +28,15 @@ def argmincritmia(p):
 
 if __name__ == '__main__':
     plt.clf()
-    p = np.linspace(0.001, 0.999, 999)
+    # p = np.linspace(0.001, 0.999, 999)
+    p = np.linspace(0.001, 0.999, 20)
     argminfp = np.array([argmincritmia(pi) for pi in p])
     plt.plot(p, argminfp,
-             linestyle='--', color=CB_color_cycle[0], label='left')
+             'g-o', color=CB_color_cycle[0], label='left')
     plt.plot(p, np.repeat(0.5, len(p)),
-             linestyle='-', color=CB_color_cycle[1], label='CART')
+             color=CB_color_cycle[1], label='CART')
     plt.plot(p, 1-argminfp,
-             linestyle='-.', color=CB_color_cycle[2], label='right')
+             'r-s', color=CB_color_cycle[2], label='right')
     plt.xlabel(r"$p$")
     plt.ylabel(r"$s^\star_{MIA}(p)$")
     plt.legend(loc='center right', framealpha=1)
