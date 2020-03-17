@@ -5,13 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 
-matplotlib.rcParams.update({'font.size': 16})
 CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#984ea3',
                   '#999999', '#e41a1c', '#dede00']
-
-if not os.path.exists("../figures"):
-    os.mkdir("../figures")
 
 
 def critmia(s, p):
@@ -27,16 +23,21 @@ def argmincritmia(p):
 
 
 if __name__ == '__main__':
+    matplotlib.rcParams.update({'font.size': 16})
+
+    if not os.path.exists("../figures"):
+        os.mkdir("../figures")
+
     plt.clf()
     # p = np.linspace(0.001, 0.999, 999)
     p = np.linspace(0.001, 0.999, 20)
     argminfp = np.array([argmincritmia(pi) for pi in p])
     plt.plot(p, argminfp,
-             'g-o', color=CB_color_cycle[0], label='left')
+             '-o', color=CB_color_cycle[0], label='left')
     plt.plot(p, np.repeat(0.5, len(p)),
              color=CB_color_cycle[1], label='CART')
     plt.plot(p, 1-argminfp,
-             'r-s', color=CB_color_cycle[2], label='right')
+             '-s', color=CB_color_cycle[2], label='right')
     plt.xlabel(r"$p$")
     plt.ylabel(r"$s^\star_{MIA}(p)$")
     plt.legend(loc='center right', framealpha=1)
