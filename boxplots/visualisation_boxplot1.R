@@ -18,7 +18,7 @@ names(scores_mcar) <- c(
     "0. MIA (xgboost)"
     )
 names(scores_mnar) <- names(scores_mcar)
-names(scores_pred <- names(scores_mcar)
+names(scores_pred) <- names(scores_mcar)
      
 dir.create(file.path('figures'), showWarnings=FALSE)
 

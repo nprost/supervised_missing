@@ -40,6 +40,8 @@ MASS
 norm
 doParallel
 doSNOW
+gridExtra
+viridis
 ```
 
 To run *script_boxplots.R* or *script_consistency.R* with, say, 20 jobs to parallelize the "for" loop and 10 threads per forest/boosting, do
