@@ -14,7 +14,7 @@ names(scores_mcar) <- c(
     "0. MIA (forest)",
     "1. block (xgboost)",
     "3. impute mean (xgboost)", "2. impute mean + mask (xgboost)", 
-    "5. impute Gaussian (xgboost)", "4. impute Gaussian + mask (xgboost)"
+    "5. impute Gaussian (xgboost)", "4. impute Gaussian + mask (xgboost)",
     "0. MIA (xgboost)"
     )
 names(scores_mnar) <- names(scores_mcar)
