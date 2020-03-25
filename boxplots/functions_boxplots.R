@@ -121,6 +121,22 @@ make_data6 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
     return(result)
 }
 
+# MCAR, quadratic
+# make_data6 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
+#     X1 = rnorm(size, sd=10)
+#     X2 = X1 ** 2
+#     X = cbind.data.frame(X1, X2)
+#     y <- as.matrix(X)%*%c(1, 1)
+#     y <- y + rnorm(size, sd=noise)
+#     # M <- matrix(rbinom(size*dim, 1, prob=prob), ncol=dim)
+#     M <- matrix(rbinom(size*2, 1, prob=prob), ncol=2)
+#     M[, 2] <- 0
+#     X[M==1] <- NA
+#     result <- cbind.data.frame(y, as.data.frame(X))
+#     colnames(result)[1] <- "y"
+#     return(result)
+# }
+
 
 ###############################################################################
 ################################ PREPROCESSING ################################

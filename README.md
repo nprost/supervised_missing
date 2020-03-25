@@ -56,7 +56,7 @@ To build the figures, just run the scripts,
 ```bash
 Rscript boxplots/visualisation_boxplot1.R
 Rscript boxplots/visualisation_boxplot2.R
-python consistency/visualisation_consistency.R
+python consistency/visualisation_consistency.py
 ```
 
 All figure outputs go to the directory **figures** (created when nonexistent).

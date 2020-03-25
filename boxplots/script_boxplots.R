@@ -100,45 +100,47 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
     return(results.list)
 }
 
+n_features_boxplot1 <- 3
 if (boxplot_choice == 1 | boxplot_choice == -1) {
     if (file.exists("boxplots/results/boxplot_MCAR.RData")) {
         load("boxplots/results/boxplot_MCAR.RData")
-        res <- Parallel("make_data1", n_features=3)
+        res <- Parallel("make_data1", n_features=n_features_boxplot1)
         scores_mcar <- modifyList(scores_mcar, res)
-    } else scores_mcar <- Parallel("make_data1", n_features=3)
+    } else scores_mcar <- Parallel("make_data1", n_features=n_features_boxplot1)
     save(scores_mcar, file="boxplots/results/boxplot_MCAR.RData")
 
     if (file.exists("boxplots/results/boxplot_MNAR.RData")) {
         load("boxplots/results/boxplot_MNAR.RData")
-        scores_mnar <- modifyList(scores_mnar, Parallel("make_data3", n_features=3))
-    } else scores_mnar <- Parallel("make_data3", n_features=3)
+        scores_mnar <- modifyList(scores_mnar, Parallel("make_data3", n_features=n_features_boxplot1))
+    } else scores_mnar <- Parallel("make_data3", n_features=n_features_boxplot1)
     save(scores_mnar, file="boxplots/results/boxplot_MNAR.RData")
 
     if (file.exists("boxplots/results/boxplot_PRED.RData")) {
         load("boxplots/results/boxplot_PRED.RData")
-        scores_pred <- modifyList(scores_pred, Parallel("make_data3bis", n_features=3))
-    } else scores_pred <- Parallel("make_data3bis", n_features=3)
+        scores_pred <- modifyList(scores_pred, Parallel("make_data3bis", n_features=n_features_boxplot1))
+    } else scores_pred <- Parallel("make_data3bis", n_features=n_features_boxplot1)
     save(scores_pred, file="boxplots/results/boxplot_PRED.RData")
 
 } 
 
+n_features_boxplot2 <- 10
 if (boxplot_choice == 2 || boxplot_choice == -1) {
     if (file.exists("boxplots/results/boxplot2_1.RData")) {
         load("boxplots/results/boxplot2_1.RData")
-        scores_21 <- modifyList(scores_21, Parallel("make_data4", n_features=10))
-    } else scores_21 <- Parallel("make_data4", n_features=10)
+        scores_21 <- modifyList(scores_21, Parallel("make_data4", n_features=n_features_boxplot2))
+    } else scores_21 <- Parallel("make_data4", n_features=n_features_boxplot2)
     save(scores_21, file="boxplots/results/boxplot2_1.RData")
 
     if (file.exists("boxplots/results/boxplot2_2.RData")) {
         load("boxplots/results/boxplot2_2.RData")
-        scores_22 <- modifyList(scores_22, Parallel("make_data5", n_features=10))
-    } else scores_22 <- Parallel("make_data5", n_features=10)
+        scores_22 <- modifyList(scores_22, Parallel("make_data5", n_features=n_features_boxplot2))
+    } else scores_22 <- Parallel("make_data5", n_features=n_features_boxplot2)
     save(scores_22, file="boxplots/results/boxplot2_2.RData")
 
     if (file.exists("boxplots/results/boxplot2_3.RData")) {
         load("boxplots/results/boxplot2_3.RData")
-        scores_23 <- modifyList(scores_23, Parallel("make_data6", n_features=10))
-    } else scores_23 <- Parallel("make_data6", n_features=10)
+        scores_23 <- modifyList(scores_23, Parallel("make_data6", n_features=n_features_boxplot2))
+    } else scores_23 <- Parallel("make_data6", n_features=n_features_boxplot2)
     save(scores_23, file="boxplots/results/boxplot2_3.RData")
 
 } else stop("Invalid boxplot_choice")
