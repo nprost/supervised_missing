@@ -110,9 +110,20 @@ scores[7]['Bayes rate'] = (np.repeat(0.7484916, L), np.repeat(0, L),
 ###############################################################################
 # PLOT
 
-CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
-                  '#f781bf', '#a65628', '#984ea3',
-                  '#999999', '#e41a1c', '#dede00']
+# CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
+#                   '#f781bf', '#a65628', '#984ea3',
+#                   '#999999', '#e41a1c', '#dede00']
+CB_color_cycle = [
+    '#377eb8',
+    '#cc6633',
+    '#00cc00',  # '#4daf4a',  # '#00cc33',
+    '#ff99ff',
+    '#a65628',
+    '#660033',
+    '#cccccc',
+    '#e41a1c',
+    '#dede00']
+
 
 plt.clf()
 fig, ax = plt.subplots(3, 3, figsize=(10, 10))
@@ -175,31 +186,39 @@ for enum, score in enumerate(scores):
             marker = '.'
             markersize = 5
             markevery = 1
+            markerfacecolor = colors_dict[name]
         elif 'Gaussian imputation' in name:
             marker = '2'
             markersize = 5
             markevery = 1
+            markerfacecolor = colors_dict[name]
         elif 'Mean imputation' in name:
             marker = 's'
             markersize = 4
             markevery = 3
+            markerfacecolor = colors_dict[name]
         elif 'MIA' in name:
             marker = 'v'
             markersize = 5
             markevery = 2
+            markerfacecolor = '#4daf4a'
         elif 'Block' in name:
             marker = ','
             markersize = 5
             markevery = 1
+            markerfacecolor = colors_dict[name]
         else:
             marker = ','
             markersize = 5
             markevery = 1
+            markerfacecolor = colors_dict[name]
 
         ax[ax_x, ax_y].semilogx(sizes, means, label=labelname,
                                 linestyle=linestyle, linewidth=linewidth,
                                 marker=marker, markersize=markersize,
-                                markevery=markevery, c=colors_dict[name])
+                                markerfacecolor=markerfacecolor,
+                                markevery=markevery,
+                                c=colors_dict[name])
 
     ax[ax_x, ax_y].set_xlabel("Sample size")
     ax[ax_x, ax_y].set_ylabel("Explained variance")

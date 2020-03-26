@@ -35,8 +35,19 @@ scores_22 <- lapply(scores_22, function(x) 1-x/VARY2)
 VARY3 <- 10820
 scores_23 <- lapply(scores_23, function(x) 1-x/VARY3)
 
-cols <- c('#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
-          '#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf')
+# cols <- c('#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
+#           '#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf')
+cols <- c('#377eb8', 
+          '#cc6633',
+          '#00ff33',
+          '#ffccff',
+          '#a65628',
+          '#660033',
+          '#cccccc',
+          '#e41a1c',
+          '#dede00')
+
+
 collist <- c(
     cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],
     cols[3],cols[2],cols[2],cols[4],cols[4],

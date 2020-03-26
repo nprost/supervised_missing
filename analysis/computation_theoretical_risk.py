@@ -5,9 +5,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 
-CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
-                  '#f781bf', '#a65628', '#984ea3',
-                  '#999999', '#e41a1c', '#dede00']
+# CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
+#                   '#f781bf', '#a65628', '#984ea3',
+#                   '#999999', '#e41a1c', '#dede00']
+CB_color_cycle = [
+    '#377eb8',
+    '#cc6633',
+    '#00cc00',  # '#4daf4a',  # '#00cc33',
+    '#ff99ff',
+    '#a65628',
+    '#660033',
+    '#cccccc',
+    '#e41a1c',
+    '#dede00']
 
 
 def critmia(s, p):
@@ -42,8 +52,8 @@ def riskproba(p):
 if __name__ == '__main__':
     matplotlib.rcParams.update({'font.size': 12})
 
-    if not os.path.exists("../figures"):
-        os.mkdir("../figures")
+    if not os.path.exists("figures"):
+        os.mkdir("figures")
 
     plt.clf()
     fig, axs = plt.subplots(1, 3, figsize=(10, 4))
@@ -58,29 +68,29 @@ if __name__ == '__main__':
         ax.set_ylim(top=0.12)
         if count == 0:
             ax.plot(p, rproba,
-                    color=CB_color_cycle[0],
+                    color=CB_color_cycle[7],
                     label='Probabilistic split')
             ax.plot(p, rblock,
-                    '-o', color=CB_color_cycle[1], markevery=10,
+                    '-o', color=CB_color_cycle[5], markevery=10,
                     label='Block propagation')
             ax.plot(p, rmia,
                     '-s', color=CB_color_cycle[2], markevery=12,
                     label='MIA')
             ax.plot(p, rsurr2,
-                    '-^', color=CB_color_cycle[3], markevery=14,
+                    '-^', color=CB_color_cycle[0], markevery=14,
                     label='Surrogate splits')
         else:
             ax.plot(p, rproba,
-                    color=CB_color_cycle[0],
+                    color=CB_color_cycle[7],
                     label=None)
             ax.plot(p, rblock,
-                    '-o', color=CB_color_cycle[1], markevery=10,
+                    '-o', color=CB_color_cycle[5], markevery=10,
                     label=None)
             ax.plot(p, rmia,
                     '-s', color=CB_color_cycle[2], markevery=12,
                     label=None)
             ax.plot(p, rsurr2,
-                    '-^', color=CB_color_cycle[3], markevery=14,
+                    '-^', color=CB_color_cycle[0], markevery=14,
                     label=None)
         ax.set_xlabel(r"Fraction $p$ of missing values")
         ax.set_ylabel(r"Quadratic risk $R(p)$")
@@ -89,5 +99,5 @@ if __name__ == '__main__':
     fig.legend(loc=(0.15, 0.05), ncol=4, frameon=False)
     plt.tight_layout()
     fig.subplots_adjust(bottom=0.3)
-    fig.savefig("../figures/theo_risk2.pdf")
+    fig.savefig("figures/theo_risk2.pdf")
     plt.close(fig)

@@ -25,8 +25,8 @@ def argmincritmia(p):
 if __name__ == '__main__':
     matplotlib.rcParams.update({'font.size': 16})
 
-    if not os.path.exists("../figures"):
-        os.mkdir("../figures")
+    if not os.path.exists("figures"):
+        os.mkdir("figures")
 
     plt.clf()
     # p = np.linspace(0.001, 0.999, 999)
@@ -42,4 +42,4 @@ if __name__ == '__main__':
     plt.xlabel(r"Split position $s^\star_{MIA}(p)$")
     plt.legend(loc='best', framealpha=1)
     plt.tight_layout()
-    plt.savefig("../figures/threshold.pdf")
+    plt.savefig("figures/threshold.pdf")

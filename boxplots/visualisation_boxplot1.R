@@ -33,8 +33,20 @@ scores_mcar <- lapply(scores_mcar, function(x) 1-x/VARY)
 scores_mnar <- lapply(scores_mnar, function(x) 1-x/VARY)
 scores_pred <- lapply(scores_pred, function(x) 1-x/VARY)
 
-cols <- c('#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
-          '#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf')
+# cols <- c('#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd',
+#           '#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf')
+# cols <- c('#377eb8', '#ff7f00', '#4daf4a',
+#           '#f781bf', '#a65628', '#984ea3',
+#           '#999999', '#e41a1c', '#dede00')
+cols <- c('#377eb8',
+          '#cc6633',
+          '#00ff33',
+          '#ffccff',
+          '#a65628',
+          '#660033',
+          '#cccccc',
+          '#e41a1c',
+          '#dede00')
 
 collist <- c(
     cols[3],cols[2],cols[2],cols[4],cols[4],cols[1],cols[1],cols[7],cols[7],
