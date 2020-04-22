@@ -1,6 +1,4 @@
-**.RData
 **/Rhistory
-**/results
 figures/
 **/__pycache__
 sink
