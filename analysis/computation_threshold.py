@@ -39,7 +39,8 @@ if __name__ == '__main__':
     plt.plot(1-argminfp, p,
              '--', color=CB_color_cycle[0])
     plt.ylabel(r"Fraction $p$ of missing values")
-    plt.xlabel(r"Split position $s^\star_{MIA}(p)$")
+    # plt.xlabel(r"Split position $s^\star_{MIA}(p)$")
+    plt.xlabel(r"Split position")
     plt.legend(loc='best', framealpha=1)
     plt.tight_layout()
     plt.savefig("figures/threshold.pdf")
