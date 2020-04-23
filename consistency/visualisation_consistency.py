@@ -54,7 +54,7 @@ methods_dict = {
     'xgboost': [
         {'model': 'xgboost', 'strategy': 'mean', 'withpattern': "FALSE"},
         {'model': 'xgboost', 'strategy': 'gaussian', 'withpattern': "FALSE"},
-        {'model': 'xgboost', 'strategy': 'none', 'withpattern': "FALSE"},
+        #{'model': 'xgboost', 'strategy': 'none', 'withpattern': "FALSE"},
         {'model': 'xgboost', 'strategy': 'mia', 'withpattern': "FALSE"}]
     }
 
