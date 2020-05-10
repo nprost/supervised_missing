@@ -227,7 +227,11 @@ preprocess <- function(df, strategy, withpattern, parameters) {
         X.imput <- cbind.data.frame(Xm, Xp)
     } else if (strategy == "none") {
         X.imput <- X
-    }
+    }  else if  (strategy == "oor") {
+      Xm <- X
+      Xm[indicators] <- 999999
+      X.imput <- cbind.data.frame(Xm)
+    } 
 
     if (withpattern==TRUE) {
         indicators.factor <- data.frame(apply(indicators, 2, as.factor))
@@ -251,7 +255,7 @@ run_scores <- function(model, strategy, withpattern, dataset,
                        sizes, n_rep, prob, n_features, noise, rho,
                        min_samples_leaf, seed, num.threads.ranger) {
     #' model: "rpart", "ctree", "ranger", "xgboost"
-    #' strategy: "none", "mean", "gaussian", "mia"
+    #' strategy: "none", "mean", "gaussian", "mia", "oor"
     #' withpattern: TRUE, FALSE
     #' dataset: "make_data1", ..., "make_data6"
 

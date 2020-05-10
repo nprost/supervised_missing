@@ -20,7 +20,7 @@ cat("This script runs consistency results for
     * three mechanisms: 1. MCAR, 2. MNAR, 3. PRED
     * two tree models: rpart, ctree, one forest model: ranger, one boosting model: xgboost
     * several methods: surrogates (rpart, ctree) (+ mask), gaussian imputation (+ mask),
-    mean imputation (+ mask), MIA, block propagation (xgboost)
+    mean imputation (+ mask), MIA, oor imputation (+ mask) 
     ")
 cat("Starting R script\n")
 
@@ -42,6 +42,7 @@ registerDoSNOW(cl)
 Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
     iter.seed <- 15
     sizes <- c(1000)
+    #n_rep <- 5
     n_rep <- 500
     prob <- 0.2
     noise = 0.1
@@ -56,7 +57,12 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
         ,
         "rpart mean + mask" = list(dataset=dataset, model='rpart', strategy='mean', withpattern=TRUE)
         ,
-        "rpart gaussian" = list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=FALSE)
+        "rpart oor" = list(dataset=dataset, model='rpart', strategy='oor', withpattern=FALSE)
+        ,
+        "rpart oor + mask" = list(dataset=dataset, model='rpart', strategy='oor', withpattern=TRUE)
+        ,
+        
+         "rpart gaussian" = list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=FALSE)
         ,
         "rpart gaussian + mask" = list(dataset=dataset, model='rpart', strategy='gaussian', withpattern=TRUE)
         ,
@@ -70,23 +76,31 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
         ,
         "ranger mean + mask" = list(dataset=dataset, model='ranger', strategy='mean', withpattern=TRUE)
         ,
+        "ranger oor" = list(dataset=dataset, model='ranger', strategy='oor', withpattern=FALSE)
+        ,
+        "ranger oor + mask" = list(dataset=dataset, model='ranger', strategy='oor', withpattern=TRUE)
+        ,
+        
         "ranger gaussian" = list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=FALSE)
         ,
         "ranger gaussian + mask" = list(dataset=dataset, model='ranger', strategy='gaussian', withpattern=TRUE)
         ,
         "ranger mia" = list(dataset=dataset, model='ranger', strategy='mia', withpattern=FALSE)
         ,
-        "xgboost" = list(dataset=dataset, model='xgboost', strategy='none', withpattern=FALSE)
-        ,
         "xgboost mean" = list(dataset=dataset, model='xgboost', strategy='mean', withpattern=FALSE)
         ,
         "xgboost mean + mask" = list(dataset=dataset, model='xgboost', strategy='mean', withpattern=TRUE)
         ,
+        "xgboost oor" = list(dataset=dataset, model='xgboost', strategy='oor', withpattern=FALSE)
+        ,
+        "xgboost oor + mask" = list(dataset=dataset, model='xgboost', strategy='oor', withpattern=TRUE)
+        ,
+        
         "xgboost gaussian" = list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=FALSE)
         ,
         "xgboost gaussian + mask" = list(dataset=dataset, model='xgboost', strategy='gaussian', withpattern=TRUE)
         ,
-        "xgboost mia" = list(dataset=dataset, model='xgboost', strategy='mia', withpattern=FALSE)
+        "xgboost mia" = list(dataset=dataset, model='xgboost', strategy='none', withpattern=FALSE)
     )) %dopar% {
         iter.seed <- iter.seed + 1
         source('boxplots/functions_boxplots.R')
