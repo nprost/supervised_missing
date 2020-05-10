@@ -8,18 +8,33 @@ scores_22 <- scores_22
 scores_23 <- scores_23
 
 names(scores_21) <- c(
-  "i. rpart", "h. rpart + mask", 
-  "c.  mean", "b.  mean + mask", "e.  oor", "d.  oor + mask",
-  "g.  Gaussian", "f.  Gaussian + mask", 
-  "a. MIA",
-  "k. ctree", "j. ctree + mask",
-  "c.  mean (forest)", "b.  mean + mask (forest)", "e.  oor (forest)", "d.  oor + mask (forest)",
-  "g.  Gaussian (forest)", "f.  Gaussian + mask (forest)", 
-  "a. MIA (forest)",
-  "c.  mean (xgboost)", "b.  mean + mask (xgboost)", "e.  oor (xgboost)", "d.  oor + mask (xgboost)",
-  "g.  Gaussian (xgboost)", "f.  Gaussian + mask (xgboost)", 
-  "a. MIA (xgboost)"
+  "n rpart", "m rpart + mask", 
+  "c mean", "b mean + mask", "e oor", "d oor + mask",
+  "g Gaussian", "f Gaussian + mask", 
+  "a MIA",
+  "y ctree", "x ctree + mask",
+  "c mean (forest)", "b mean + mask (forest)", "e oor (forest)", "d oor + mask (forest)",
+  "g Gaussian (forest)", "f Gaussian + mask (forest)", 
+  "a MIA (forest)",
+  "c mean (xgboost)", "b mean + mask (xgboost)", "e oor (xgboost)", "d oor + mask (xgboost)",
+  "g Gaussian (xgboost)", "f Gaussian + mask (xgboost)", 
+  "a MIA (xgboost)"
 )
+
+labels = c(
+    "n rpart"="rpart",
+    "m rpart + mask"="rpart + mask", 
+    "c mean"="mean",
+    "b mean + mask"="mean + mask",
+    "e oor"="oor",
+    "d oor + mask"="oor + mask",
+    "g Gaussian"="Gaussian",
+    "f Gaussian + mask"="Gaussian + mask", 
+    "a MIA"="MIA",
+    "y ctree"="ctree",
+    "x ctree + mask"="ctree + mask"
+)
+
 names(scores_22) <- names(scores_21)
 names(scores_23) <- names(scores_21)
 
@@ -79,39 +94,51 @@ df_for_ggplot <- function(scores) {
   return(aa)
 }
 
-pdf('figures/boxplot_linearlinear.pdf')
 aa <- df_for_ggplot(scores_21)
 ggplot(data=aa, aes(method, score)) +
   geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
   geom_boxplot(outlier.alpha = 0.5, fill=collist) +
-  theme(axis.text.y = element_text(face="bold", 
-                                   size=15), axis.title = element_text(face="bold", size=16))+
-  labs(title = "", x  = "", y = "Relative explained variance") +
+  theme_minimal() +
+  theme(axis.text.y = element_text(face="bold", size=15, color='black'),
+	axis.title = element_text(size=15, color='black'),
+	strip.text.x = element_text(size=13, color='black'),
+        plot.margin = unit(c(0, 0, 0, 0), "cm") #top, right, bottom, left
+	) +
+  labs(title="", x="", y="Relative explained variance") +
+  scale_x_discrete(labels=labels, drop=TRUE) +
   coord_flip() +
   facet_wrap(~forest, nrow=3, scales = "free")  
-dev.off()
+ggsave(filename='figures/boxplot_linearlinear.pdf', width=5.4, height=7.5)
 
-pdf('figures/boxplot_linearnonlinear.pdf')
 aa <- df_for_ggplot(scores_22)
 ggplot(data=aa, aes(method, score)) +
   geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
   geom_boxplot(outlier.alpha = 0.5, fill=collist) +
-  theme(axis.text.y = element_text(face="bold", 
-                                   size=15), axis.title = element_text(face="bold", size=16))+
-  labs(title = "", x  = "", y = "Relative explained variance") +
+  theme_minimal() +
+  theme(axis.text.y = element_text(face="bold", size=15, color='black'),
+	axis.title = element_text(size=15, color='black'),
+	strip.text.x = element_text(size=13, color='black'),
+        plot.margin = unit(c(0, 0, 0, 0), "cm") #top, right, bottom, left
+	) +
+  labs(title="", x="", y="Relative explained variance") +
+  scale_x_discrete(labels=labels, drop=TRUE) +
   coord_flip() +
   facet_wrap(~forest, nrow=3, scales = "free")  
-dev.off()
+ggsave(filename='figures/boxplot_linearnonlinear.pdf', width=5.4, height=7.5)
 
-pdf('figure/boxplot_nonlinearnonlinear.pdf')
 aa <- df_for_ggplot(scores_23)
 ggplot(data=aa, aes(method, score)) +
   geom_hline(yintercept=0, color='grey', size=3, linetype=1) +
   geom_boxplot(outlier.alpha = 0.5, fill=collist) +
-  theme(axis.text.y = element_text(face="bold", 
-                                   size=15), axis.title = element_text(face="bold", size=16))+
-  labs(title = "", x  = "", y = "Relative explained variance") +
+  theme_minimal() +
+  theme(axis.text.y = element_text(face="bold", size=15, color='black'),
+	axis.title = element_text(size=15, color='black'),
+	strip.text.x = element_text(size=13, color='black'),
+        plot.margin = unit(c(0, 0, 0, 0), "cm") #top, right, bottom, left
+	) +
+  labs(title="", x="", y="Relative explained variance") +
+  scale_x_discrete(labels=labels, drop=TRUE) +
   coord_flip() +
   facet_wrap(~forest, nrow=3, scales = "free")  
-dev.off()
+ggsave(filename='figures/boxplot_nonlinearnonlinear.pdf', width=5.4, height=7.5)
 
