@@ -50,7 +50,7 @@ y_variances = {
     'pred': 10,
     'linearlinear': 25.4,
     'linearnonlinear': 1710,
-    'nonlinearnonlinear': 10820,
+    'nonlinearnonlinear': 1082,
 }
 
 for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
@@ -97,11 +97,11 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
         elif name == 'mnar':
             ax.set_xlim(-.29, .14)
         elif name == 'pred':
-            ax.set_xlim(-.22, .18)
+            ax.set_xlim(-.22, .14)
         elif name == 'linearlinear':
             ax.set_xlim(-.24, .18)
         elif name == 'linearnonlinear':
-            ax.set_xlim(-18, 17)
+            ax.set_xlim(-.2, .2)
         elif name == 'nonlinearnonlinear':
             ax.set_xlim(-50, 55)
         sns.despine(bottom=True, left=False)
@@ -119,13 +119,13 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
         elif name == 'mnar':
             ax.set_xlim(-.29, .14)
         elif name == 'pred':
-            ax.set_xlim(-.22, .18)
+            ax.set_xlim(-.22, .14)
         elif name == 'linearlinear':
             ax.set_xlim(-.07, .07)
         elif name == 'linearnonlinear':
-            ax.set_xlim(-.1, .1)
+            ax.set_xlim(-.2, .2)
         elif name == 'nonlinearnonlinear':
-            ax.set_xlim(-.065, .07)
+            ax.set_xlim(-.32, .32)
         this_data = data.query('forest == @forest')
         ticks = ax.get_xticks()
         ticklabels = list()

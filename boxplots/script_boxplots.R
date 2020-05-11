@@ -41,9 +41,9 @@ registerDoSNOW(cl)
 
 Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
     iter.seed <- 15
-    sizes <- c(1000)
+    sizes <- c(2000)
     #n_rep <- 5
-    n_rep <- 4000
+    n_rep <- 100
     prob <- 0.2
     noise = 0.1
     min_samples_leaf = 30

@@ -112,7 +112,7 @@ make_data6 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
     X8 <- 1 / (sin(2*Xi) - 2) + rnorm(size, sd=xnoise)
     X9 <- - Xi**4 + rnorm(size, sd=xnoise)
     X <- cbind.data.frame(X0, X1, X2, X3, X4, X5, X6, X7, X8, X9)
-    y <- 10*sin(pi*X[, 1]*X[, 2]) + 20*(X[, 3]-0.5)**2 + 10*X[, 4] + 5*X[, 5]
+    y <- sin(pi*X[, 1]*X[, 2]) + (X[, 3]-0.5)**2 + X[, 4] + 5*X[, 5]
     y <- y + noise*rnorm(size)
     M <- matrix(rbinom(size*dim, size=1, prob=prob), ncol=dim)
     X[M==1] <- NA
@@ -290,7 +290,7 @@ run_scores <- function(model, strategy, withpattern, dataset,
                 data.raw <- make_data6(size, noise, prob, rho, n_features)
             } else stop("Invalid dataset")
 
-            n_test <- floor(size * 0.2)
+            n_test <- floor(size * 0.5)
             test.raw <- data.raw[1:n_test, ]
             train.raw <- data.raw[(n_test+1):size, ]
 
