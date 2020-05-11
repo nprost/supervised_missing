@@ -76,7 +76,13 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
         elif name == 'mnar':
             ax.set_xlim(-.29, .14)
         elif name == 'pred':
-            ax.set_xlim(-.22, .12)
+            ax.set_xlim(-.22, .18)
+        elif name == 'linearlinear':
+            ax.set_xlim(-.24, .14)
+        elif name == 'linearnonlinear':
+            ax.set_xlim(-18, 16)
+        elif name == 'nonlinearnonlinear':
+            ax.set_xlim(-50, 55)
         sns.despine(bottom=True, left=False)
         for i in range(len(order)):
             if i % 2:
