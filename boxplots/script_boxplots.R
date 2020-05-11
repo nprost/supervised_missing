@@ -43,7 +43,7 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
     iter.seed <- 15
     sizes <- c(1000)
     #n_rep <- 5
-    n_rep <- 500
+    n_rep <- 4000
     prob <- 0.2
     noise = 0.1
     min_samples_leaf = 30
@@ -102,7 +102,7 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
         ,
         "xgboost mia" = list(dataset=dataset, model='xgboost', strategy='none', withpattern=FALSE)
     )) %dopar% {
-        iter.seed <- iter.seed + 1
+        #iter.seed <- iter.seed + 1
         source('boxplots/functions_boxplots.R')
         run_scores(model=param$model, strategy=param$strategy, withpattern=param$withpattern,
                    dataset=param$dataset,
