@@ -123,7 +123,7 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
         elif name == 'linearlinear':
             ax.set_xlim(-.07, .07)
         elif name == 'linearnonlinear':
-            ax.set_xlim(-.2, .2)
+            ax.set_xlim(-.09, .09)
         elif name == 'nonlinearnonlinear':
             ax.set_xlim(-.32, .32)
         this_data = data.query('forest == @forest')
