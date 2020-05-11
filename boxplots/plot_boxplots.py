@@ -78,7 +78,7 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
         elif name == 'pred':
             ax.set_xlim(-.22, .18)
         elif name == 'linearlinear':
-            ax.set_xlim(-.24, .14)
+            ax.set_xlim(-.24, .18)
         elif name == 'linearnonlinear':
             ax.set_xlim(-18, 16)
         elif name == 'nonlinearnonlinear':
