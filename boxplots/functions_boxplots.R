@@ -16,9 +16,13 @@ library(norm)
 make_data1 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
     Sigma <- rho*matrix(rep(1, dim**2), nrow=dim)+(1-rho)*diag(1, nrow=dim)
     X <- as.data.frame(mvrnorm(size, mu=rep(1, dim), Sigma=Sigma))
-    y <- X[, 1]**2 + rnorm(size, sd=noise)
+    y <- X[, 1]**2 + X[, 2]**2 + X[, 3]**2 + rnorm(size, sd=noise)
     M <- rbinom(size, 1, prob=prob)
     X[M==1, 1] <- NA
+    M <- rbinom(size, 1, prob=prob)
+    X[M==1, 2] <- NA
+    M <- rbinom(size, 1, prob=prob)
+    X[M==1, 3] <- NA
     result <- cbind(y, as.data.frame(X))
     colnames(result)[1] <- "y"
     return(result)
@@ -29,10 +33,14 @@ make_data1 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
 make_data2 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
     Sigma <- rho*matrix(rep(1, dim**2), nrow=dim)+(1-rho)*diag(1, nrow=dim)
     X <- as.data.frame(mvrnorm(size, mu=rep(1, dim), Sigma=Sigma))
-    y <- X[, 1]**2 + rnorm(size, sd=noise)
+    y <- X[, 1]**2 + X[, 3]**2 + X[, 5]**2 + rnorm(size, sd=noise)
     threshold <- quantile(X[, 2], prob=1-prob, type=1)
     M <- 1*(X[, 2] > threshold)
     X[M==1, 1] <- NA
+    M <- 1*(X[, 4] > threshold)
+    X[M==1, 3] <- NA
+    M <- 1*(X[, 6] > threshold)
+    X[M==1, 5] <- NA
     result <- cbind(y, as.data.frame(X))
     colnames(result)[1] <- "y"
     return(result)
@@ -43,10 +51,14 @@ make_data2 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
 make_data3 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
     Sigma <- rho*matrix(rep(1, dim**2), nrow=dim)+(1-rho)*diag(1, nrow=dim)
     X <- as.data.frame(mvrnorm(size, mu=rep(1, dim), Sigma=Sigma))
-    y <- X[, 1]**2 + rnorm(size, sd=noise)
+    y <- X[, 1]**2 + X[, 2]**2 + X[, 3]**2 + rnorm(size, sd=noise)
     threshold <- quantile(X[, 1], prob = 1-prob, type =1)
     M <- 1*(X[,1] > threshold)
     X[M==1,1] <- NA
+    M <- 1*(X[,2] > threshold)
+    X[M==1,2] <- NA
+    M <- 1*(X[,3] > threshold)
+    X[M==1,3] <- NA
     result <- cbind(y, as.data.frame(X))
     colnames(result)[1] <- "y"
     return(result)
@@ -57,10 +69,14 @@ make_data3 <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
 make_data3bis <- function(size=100, noise=0.1, prob=0.2, rho=0.5, dim=10) {
     Sigma <- rho*matrix(rep(1, dim**2), nrow=dim)+(1-rho)*diag(1, nrow=dim)
     X <- as.data.frame(mvrnorm(size, mu=rep(1, dim), Sigma=Sigma))
-    y <- X[, 1]**2 + rnorm(size, sd=noise)
-    M <- rbinom(size, 1, prob=prob)
-    X[M==1, 1] <- NA
-    y <- y + 3*M
+    y <- X[, 1]**2 + X[, 2]**2 + X[, 3]**2 + rnorm(size, sd=noise)
+    M1 <- rbinom(size, 1, prob=prob)
+    X[M1==1, 1] <- NA
+    M2 <- rbinom(size, 1, prob=prob)
+    X[M2==1, 2] <- NA
+    M3 <- rbinom(size, 1, prob=prob)
+    X[M3==1, 3] <- NA
+    y <- y + 2*M1 + 2*M2 + 2*M3
     result <- cbind(y, as.data.frame(X))
     colnames(result)[1] <- "y"
     return(result)

@@ -114,7 +114,7 @@ Parallel <- function(dataset, n_features, num.threads.ranger=num.threads) {
     return(results.list)
 }
 
-n_features_boxplot1 <- 3
+n_features_boxplot1 <- 9
 if (boxplot_choice == 1 | boxplot_choice == -1) {
     if (file.exists("boxplots/results/boxplot_MCAR.RData")) {
         load("boxplots/results/boxplot_MCAR.RData")
