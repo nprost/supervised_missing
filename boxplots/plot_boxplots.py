@@ -44,10 +44,14 @@ color_mapping = {
 
 FORESTS = ['DECISION TREE', 'RANDOM FOREST', 'XGBOOST']
 
+# To obtain the measure of the variance below, run in R:
+# > results <- make_data3bis(dim=9, size=200000)
+# > var(results$y)
+
 y_variances = {
-    'mcar': 10,
-    'mnar': 10,
-    'pred': 10,
+    'mcar': 33,#10,
+    'mnar': 33,
+    'pred': 35,#10,
     'linearlinear': 25.4,
     'linearnonlinear': 1710,
     'nonlinearnonlinear': 1082,
@@ -55,30 +59,38 @@ y_variances = {
 
 for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
              'nonlinearnonlinear'):
-    data = pd.read_csv(f'results/scores_{name}.csv', header=1,
-                    names=['index', 'score', 'method', 'forest'])
+  data = pd.read_csv(f'results/scores_{name}.csv', header=1,
+                  names=['index', 'score', 'method', 'forest'])
 
-    # Knonwing the variance of y, we can extract the R2
-    data['R2'] = 1 - data['score'] / y_variances[name]
-    # The fold number is encoded at the end of the name of the index
-    data['fold'] = data['index'].str.extract('(\d+)$').astype(int)
+  # Knowing the variance of y, we can extract the R2
+  data['R2'] = 1 - data['score'] / y_variances[name]
+  # The fold number is encoded at the end of the name of the index
+  data['fold'] = data['index'].str.extract('(\d+)$').astype(int)
 
-    data['rel_R2'] = data.groupby(['fold', 'forest'])['R2'].apply(
+
+  for drop_mask in (False, True):
+    if drop_mask:
+        data_ = data[~data['method'].str.contains("mask")]
+    else:
+        data_ = data.copy()
+    data_['rel_R2'] = data_.groupby(['fold', 'forest'])['R2'].apply(
         lambda df: df - df.mean())
 
-
-    height_ratios = [data.query('forest == @forest')['method'].nunique()
+    height_ratios = [data_.query('forest == @forest')['method'].nunique()
                     for forest in FORESTS]
 
     #from matplotlib import colors
     #color_mapping = {k: colors.to_rgb(v) for k, v in color_mapping.items()}
 
-    fig, axes = plt.subplots(3, 1, figsize=(5.6, 8),
+    height = 6.3 if drop_mask else 10.5
+    width = 4.6 if drop_mask else 5.6
+
+    fig, axes = plt.subplots(3, 1, figsize=(width, height),
                             gridspec_kw=dict(height_ratios=height_ratios))
 
 
     for forest, ax in zip(FORESTS, axes):
-        this_data = data.query('forest == @forest')
+        this_data = data_.query('forest == @forest')
         order = [k for k in color_mapping.keys()
                  if k in this_data['method'].unique()]
         g = sns.boxplot(x="rel_R2", y="method",
@@ -93,11 +105,11 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
         ax.set_ylabel('')
         ax.axvline(0, color='.8', zorder=0, linewidth=3)
         if name == 'mcar':
-            ax.set_xlim(-.065, .07)
+            ax.set_xlim(-.095, .09)
         elif name == 'mnar':
-            ax.set_xlim(-.29, .14)
+            ax.set_xlim(-.33, .17)
         elif name == 'pred':
-            ax.set_xlim(-.22, .14)
+            ax.set_xlim(-.09, .07)
         elif name == 'linearlinear':
             ax.set_xlim(-.24, .18)
         elif name == 'linearnonlinear':
@@ -109,17 +121,17 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
             if i % 2:
                 ax.axhspan(i - .5, i + .5, color='.9', zorder=-2)
 
-    plt.tight_layout(pad=.01, h_pad=1)
+    plt.tight_layout(pad=.01, h_pad=2)
 
     # We need to do the ticks in a second pass, as they get modified by
     # the tight_layout
     for forest, ax in zip(FORESTS, axes):
         if name == 'mcar':
-            ax.set_xlim(-.065, .07)
+            ax.set_xlim(-.15, .09)
         elif name == 'mnar':
-            ax.set_xlim(-.29, .14)
+            ax.set_xlim(-.33, .17)
         elif name == 'pred':
-            ax.set_xlim(-.22, .14)
+            ax.set_xlim(-.09, .07)
         elif name == 'linearlinear':
             ax.set_xlim(-.07, .07)
         elif name == 'linearnonlinear':
@@ -139,5 +151,6 @@ for name in ('mcar', 'mnar', 'pred', 'linearlinear', 'linearnonlinear',
                                   this_data['R2'].mean()))
         ax.set_xticklabels(ticklabels)
 
-    plt.tight_layout(pad=.01, h_pad=1)
-    plt.savefig(f'../figures/boxplot_{name}.pdf')
+    plt.tight_layout(pad=.01, h_pad=2)
+    mask_str = '_no_mask' if drop_mask else ''
+    plt.savefig(f'../figures/boxplot_{name}{mask_str}.pdf')
