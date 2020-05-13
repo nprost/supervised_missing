@@ -264,7 +264,6 @@ run_scores <- function(model, strategy, withpattern, dataset,
     # local seed
     old <- .Random.seed
     on.exit( { .Random.seed <<- old } )
-    set.seed(seed)
 
     result <- matrix(0, nrow=n_rep, ncol=length(sizes))
     iter.size <- 0
@@ -272,6 +271,8 @@ run_scores <- function(model, strategy, withpattern, dataset,
         iter.size <- iter.size + 1
 
         for (k in 1:n_rep) {
+	    seed <- seed + 1
+	    set.seed(seed)
 
             # get or match.fun do not seem to work in parallel...
             if (dataset == "make_data1") {
